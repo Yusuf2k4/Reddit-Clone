@@ -1,0 +1,206 @@
+[
+  {
+    "id": 0,
+    "communityProfile": "/images/nextjs.png",
+    "communityName": "r/nextjs",
+    "title": "Why I love Next.js",
+    "post": "Fast, flexible, and SSR built-in."
+  },
+  {
+    "id": 1,
+    "communityProfile": "/images/react.png",
+    "communityName": "r/reactjs",
+    "title": "React 19 is here!",
+    "post": "Let’s discuss the major new features."
+  },
+  {
+    "id": 2,
+    "communityProfile": "/images/ask.png",
+    "communityName": "r/AskReddit",
+    "title": "What's something you think everyone should try at least once?",
+    "post": ""
+  },
+  {
+    "id": 3,
+    "communityProfile": "/images/dev.png",
+    "communityName": "r/webdev",
+    "title": "Tailwind vs traditional CSS",
+    "post": "What’s your experience with utility-first CSS frameworks?"
+  },
+  {
+    "id": 4,
+    "communityProfile": "/images/linux.png",
+    "communityName": "r/linux",
+    "title": "Just installed Arch btw",
+    "post": "Here’s my setup with i3 and polybar."
+  },
+  {
+    "id": 5,
+    "communityProfile": "/images/funny.png",
+    "communityName": "r/funny",
+    "title": "When you realize it's Monday again...",
+    "post": ""
+  },
+  {
+    "id": 6,
+    "communityProfile": "/images/memes.png",
+    "communityName": "r/memes",
+    "title": "Coding be like...",
+    "post": ""
+  },
+  {
+    "id": 7,
+    "communityProfile": "/images/india.png",
+    "communityName": "r/india",
+    "title": "What's your go-to midnight snack?",
+    "post": "Mine's Maggi 🍜"
+  },
+  {
+    "id": 8,
+    "communityProfile": "/images/books.png",
+    "communityName": "r/books",
+    "title": "Just finished 'Atomic Habits'",
+    "post": "Absolutely loved it. Any similar suggestions?"
+  },
+  {
+    "id": 9,
+    "communityProfile": "/images/datascience.png",
+    "communityName": "r/datascience",
+    "title": "Pandas vs Polars?",
+    "post": "Trying to optimize large datasets, any advice?"
+  },
+  {
+    "id": 10,
+    "communityProfile": "/images/gaming.png",
+    "communityName": "r/gaming",
+    "title": "Elden Ring DLC thoughts?",
+    "post": "Harder than base game. Amazing visuals!"
+  },
+  {
+    "id": 11,
+    "communityProfile": "/images/music.png",
+    "communityName": "r/Music",
+    "title": "What’s your favorite underrated artist?",
+    "post": ""
+  },
+  {
+    "id": 12,
+    "communityProfile": "/images/movies.png",
+    "communityName": "r/movies",
+    "title": "Oppenheimer or Barbie?",
+    "post": "Double feature was insane 🎬"
+  },
+  {
+    "id": 13,
+    "communityProfile": "/images/programming.png",
+    "communityName": "r/programming",
+    "title": "Should I learn Rust in 2025?",
+    "post": ""
+  },
+  {
+    "id": 14,
+    "communityProfile": "/images/tech.png",
+    "communityName": "r/technology",
+    "title": "Apple's new M4 chip benchmarks leaked",
+    "post": "What are your thoughts?"
+  },
+  {
+    "id": 15,
+    "communityProfile": "/images/startups.png",
+    "communityName": "r/startups",
+    "title": "I built a SaaS with 0 funding",
+    "post": "Here’s how I did it and what I learned."
+  },
+  {
+    "id": 16,
+    "communityProfile": "/images/devhumor.png",
+    "communityName": "r/ProgrammerHumor",
+    "title": "When your code runs on the first try",
+    "post": "*suspiciously happy noises*"
+  },
+  {
+    "id": 17,
+    "communityProfile": "/images/android.png",
+    "communityName": "r/Android",
+    "title": "Pixel 9 design leaked",
+    "post": "Notch is gone!"
+  },
+  {
+    "id": 18,
+    "communityProfile": "/images/apple.png",
+    "communityName": "r/apple",
+    "title": "iOS 19 wishlist",
+    "post": "More control center customization please."
+  },
+  {
+    "id": 19,
+    "communityProfile": "/images/youtube.png",
+    "communityName": "r/youtube",
+    "title": "Tips for growing a channel in 2025?",
+    "post": ""
+  },
+  {
+    "id": 20,
+    "communityProfile": "/images/gaming2.png",
+    "communityName": "r/Games",
+    "title": "Best indie games this year?",
+    "post": "I'm loving Dave the Diver",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR52045RpDT5RvGkMPBhwvFKC-xorW3HlnI-Q&s" 
+  },
+  {
+    "id": 21,
+    "communityProfile": "/images/chess.png",
+    "communityName": "r/chess",
+    "title": "Magnus vs Hikaru: who's your pick?",
+    "post": ""
+  },
+  {
+    "id": 22,
+    "communityProfile": "/images/fitness.png",
+    "communityName": "r/fitness",
+    "title": "Lost 20kg in 6 months",
+    "post": "Here’s my routine and diet."
+  },
+  {
+    "id": 23,
+    "communityProfile": "/images/coding.png",
+    "communityName": "r/coding",
+    "title": "Best resources for system design?",
+    "post": "Beginner-friendly preferably."
+  },
+  {
+    "id": 24,
+    "communityProfile": "/images/lifeprotips.png",
+    "communityName": "r/LifeProTips",
+    "title": "LPT: Don’t hit snooze, it makes you groggier",
+    "post": ""
+  },
+  {
+    "id": 25,
+    "communityProfile": "/images/nature.png",
+    "communityName": "r/natureisfuckinglit",
+    "title": "Volcano lightning is real 🔥⚡",
+    "post": ""
+  },
+  {
+    "id": 26,
+    "communityProfile": "/images/science.png",
+    "communityName": "r/science",
+    "title": "New study: Sleep impacts memory more than diet",
+    "post": ""
+  },
+  {
+    "id": 27,
+    "communityProfile": "/images/space.png",
+    "communityName": "r/space",
+    "title": "NASA's new telescope is operational",
+    "post": "Check out these infrared images"
+  },
+  {
+    "id": 28,
+    "communityProfile": "/images/aita.png",
+    "communityName": "r/AmItheAsshole",
+    "title": "AITA for eating my roommate’s leftovers?",
+    "post": "They were 5 days old…"
+  }
+]

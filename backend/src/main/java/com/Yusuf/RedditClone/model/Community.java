@@ -1,0 +1,35 @@
+package com.Yusuf.RedditClone.model;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.Instant;
+import java.util.List;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Community {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+    String name;
+    String description;
+    @CreatedDate
+    Instant createdAt;
+    String logo;
+    String banner;
+    @ColumnDefault("0")
+    int followers;
+    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
+    List<Post> postList;
+    @ManyToMany
+    List<Tag> tagList;
+}

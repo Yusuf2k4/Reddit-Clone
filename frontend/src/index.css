@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-[rgb(26,26,27)] select-none;
+}
+.quill-dark {
+  border: 1px solid rgb(55,65,81);
+  border-radius: 0.75rem; /* more rounded */
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Toolbar */
+.quill-dark .ql-toolbar.ql-snow {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+}
+
+/* Container */
+.quill-dark .ql-container.ql-snow {
+  background: transparent;
+  border: none;
+}
+
+/* Editor text area */
+.quill-dark .ql-editor {
+  min-height: 100px; /* shorter height */
+  padding: 0.75rem;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #d1d5db;
+  background: transparent;
+}
+
+/* Icon colors */
+.quill-dark .ql-stroke {
+  stroke: #d1d5db !important;
+}
+.quill-dark .ql-fill {
+  fill: #d1d5db !important;
+}
+.quill-dark .ql-picker,
+.quill-dark .ql-picker-label,
+.quill-dark .ql-picker-item {
+  color: #d1d5db !important;
+}
+
+/* Hover effects */
+.quill-dark .ql-toolbar button:hover,
+.quill-dark .ql-picker-label:hover {
+  background-color: rgba(255,255,255,0.05);
+  border-radius: 0.25rem;
+}
+
+/* Focus outline */
+.quill-dark:focus-within {
+  border-color: rgb(96,165,250);
+  box-shadow: 0 0 0 2px rgba(96,165,250,0.4);
+}
