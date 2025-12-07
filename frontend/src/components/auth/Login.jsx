@@ -19,7 +19,7 @@ export default function Login({ handleLogin, dialogRef }) {
   }
   console.log(formData);
   
-  async function handleLogin(){
+  async function LogInUser(){
     const logData = await logUser(formData)
     const userData = await getUser();
     saveUser(userData)
@@ -94,7 +94,7 @@ export default function Login({ handleLogin, dialogRef }) {
           <button
             type="submit"
             className="p-2 bg-orange-400 w-full rounded-full text-xl hover:cursor-pointer hover:bg-orange-300 transition-all duration-500"
-            onClick={handleLogin}
+            onClick={LogInUser}
           >
             Log in
           </button>

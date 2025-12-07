@@ -43,7 +43,7 @@ public class UserController {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequestDTO.getUsername(), userLoginRequestDTO.getPassword()));
             if(authentication.isAuthenticated()){
                 UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-                String token = jwtService.generateToken(userPrincipal.getUsername());
+                String token = jwtService.generateToken(String.valueOf(userPrincipal.getId()));
                 ResponseCookie cookie = ResponseCookie.from("jwt", token)
                         .httpOnly(true)
                         .secure(false)
