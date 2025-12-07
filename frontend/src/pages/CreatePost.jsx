@@ -121,7 +121,7 @@ const CreatePost = () => {
         </h1>
       </div>
 
-      <div onSubmit={handleData} className="space-y-6" method="post">
+      <form onSubmit={handleData} className="space-y-6" method="post">
         {/* --- Community Selector --- */}
         <div
           className="relative z-20 w-full sm:w-72"
@@ -244,7 +244,7 @@ const CreatePost = () => {
             )}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

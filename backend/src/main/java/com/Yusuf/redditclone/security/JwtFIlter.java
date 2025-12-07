@@ -1,9 +1,10 @@
 package com.Yusuf.redditclone.security;
 
 import com.Yusuf.redditclone.service.JwtService;
-import com.Yusuf.redditclone.service.MyUserDetaiService;
+import com.Yusuf.redditclone.service.MyUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.io.IOException;
 public class JwtFIlter extends OncePerRequestFilter {
 
     @Autowired
-    ApplicationContext context;
+    MyUserDetailService myUserDetailService;
 
     @Autowired
     JwtService jwtService;
@@ -29,23 +30,28 @@ public class JwtFIlter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-        String token = null;
-        String userName = null;
-        if(authHeader != null && authHeader.startsWith("Bearer ")){
-            token = authHeader.substring(7);
-            userName = jwtService.extractUserName(token);
+        String token = extractJwt(request);
+        String username = null;
+        if(token != null){
+            username = jwtService.extractUserName(token);
         }
-
-        if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = context.getBean(MyUserDetaiService.class).loadUserByUsername(userName);
-
-            if(jwtService.validateToken(token,userDetails)){
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            UserDetails userDetails = myUserDetailService.loadUserByUsername(username);
+            if(jwtService.validateToken(token, userDetails)){
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
         filterChain.doFilter(request,response);
+    }
+
+    private String extractJwt(HttpServletRequest request){
+        if(request.getCookies() == null) return null;
+        for(Cookie cookie: request.getCookies()){
+            if(cookie.getName().equals("jwt")){
+                return cookie.getValue();
+            }
+        }
+        return null;
     }
 }

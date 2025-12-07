@@ -1,6 +1,6 @@
 package com.Yusuf.redditclone.security;
 
-import com.Yusuf.redditclone.service.MyUserDetaiService;
+import com.Yusuf.redditclone.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    MyUserDetaiService myUserDetailService;
+    MyUserDetailService myUserDetailService;
 
     @Autowired
     JwtFIlter jwtFIlter;
@@ -30,6 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(customizer -> customizer.disable())
+                .logout(logout -> logout.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                         "/communities", "r/**", "communities/**"

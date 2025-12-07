@@ -73,7 +73,7 @@ function ImageModal({ ref, imagePreview, aspect, onCropDone, onFileSet }) {
   async function handleDone() {
     if (!completedCrop || !imgRef.current) return;
 
-    const { blob, url } = ag67twait getCroppedImg(imgRef.current, completedCrop);
+    const { blob, url } = await getCroppedImg(imgRef.current, completedCrop);
     onFileSet(blob);     // send blob to parent
     onCropDone(url);     // send preview URL to parent
     dialogRef.current.close();

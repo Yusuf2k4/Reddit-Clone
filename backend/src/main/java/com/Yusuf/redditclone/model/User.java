@@ -25,8 +25,8 @@ public class User {
     String userName;
     String email;
     String password;
-    int age;
-    String profilePicture;
+    String gender;
+
 
     @CreatedDate
     Instant createdAt;

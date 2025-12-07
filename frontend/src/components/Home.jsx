@@ -107,7 +107,7 @@ const Home = () => {
                   {/* Vote Bubble */}
                   <div className="flex items-center space-x-2 bg-[rgb(36,36,37)] rounded-full px-3 py-1 cursor-pointer hover:bg-[rgb(46,46,47)]">
                     <ArrowUp className="hover:text-orange-500 w-4 h-4" />
-                    <span className="text-white font-medium">69</span>
+                    <span className="text-white font-medium">67</span>
                     <ArrowDown className="hover:text-blue-500 w-4 h-4" />
                   </div>
 

@@ -1,3 +1,4 @@
+// components/sidebar/Sidebar.jsx
 import {
   ChartNoAxesColumnIncreasing,
   Compass,
@@ -10,18 +11,14 @@ import {
 import { ArrowCircleDownRight, ArrowCircleUpRight } from "phosphor-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, Outlet, redirect, useLocation, useNavigate } from "react-router-dom";
-import MainFeed from "./MainFeed";
-import CustomFeed from "./CustomFeed";
-import Line from "../style/Line";
-import CreateCommunity from "../create Community/CreateCommunity";
-
+import SidebarContent from "./SidebarContent"; // NEW
+// removed direct imports of MainFeed/CustomFeed/CreateCommunity/Line
 
 const Sidebar = () => {
-  
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
   const [isMd, setIsMd] = useState(false);
-  const modalRef = useRef();
+
   useEffect(() => {
     const handleSize = () => {
       setIsMd(window.innerWidth < 768);
@@ -31,17 +28,9 @@ const Sidebar = () => {
     return () => window.removeEventListener("resize", handleSize);
   }, []);
 
- 
-    function openModal(){
-      
-      modalRef.current.open()
-    }
-  
-
-
   return (
     <>
-      <div className="mt-16 min-h-screen hidden md:block transition-all duration-300">
+      <div className="mt-16 min-h-screen  transition-all duration-300">
         <div
           className={`${
             isOpen ? "lg:w-68 md:w-48 sm:w-0" : "w-14"
@@ -57,48 +46,13 @@ const Sidebar = () => {
             </button>
           </div>
 
-          {/* Main feed*/}
+          {/* Main feed - keep same desktop-only condition */}
           {!isMd && (
             <div className="space-y-0 h-[calc(100vh-4rem)] overflow-y-auto pr-1">
-              {isOpen && (
-                <>
-                  <MainFeed isOpen={isOpen} />
-                  <Line />
-                  <CustomFeed
-                    sidebarOpen={isOpen}
-                    title="CUSTOM FEEDS"
-                    items={[{ icon: <Plus />, label: "Create custom feed" }]}
-                  />
-                  <Line />
-                  <CustomFeed
-                    sidebarOpen={isOpen}
-                    title="RECENT"
-                    items={[
-                      { icon: <img src="vite.svg" />, label: "r/soccer" },
-                      { icon: <img src="vite.svg" />, label: "r/Science" },
-                    ]}
-                  />
-                  <Line />
-                  <CustomFeed
-                    sidebarOpen={isOpen}
-                    title="COMMUNITIES"
-                    items={[
-                      { icon: <Plus />, label: "Create community",action:openModal },
-                      { icon: <Settings />, label: "Manage Communities" },
-                      { icon: <img src="vite.svg" />, label: "r/soccer" },
-                      { icon: <img src="vite.svg" />, label: "r/Science" },
-                      { icon: <Compass />, label: "r/compass" },
-                      
-                    ]}
-                  />
-                </>
-                
-              )}
-              <CreateCommunity ref={modalRef} />
+              {isOpen && <SidebarContent sidebarOpen={isOpen} />}
             </div>
           )}
         </div>
-        
       </div>
     </>
   );
