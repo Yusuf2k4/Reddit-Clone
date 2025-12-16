@@ -1,7 +1,7 @@
-import { ArrowLeft, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useImperativeHandle, useRef, useState } from "react";
 import Login from "../auth/Login";
-import SingUp from "../auth/SignUp";
+
 import SignUp from "../auth/SignUp";
 
 export default function LoginModal({ ref }) {
@@ -9,14 +9,17 @@ export default function LoginModal({ ref }) {
   const [isLogin, setIsLogin] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState(1);
-
+  
   useImperativeHandle(ref, () => ({
     open: () => {
       dialogRef.current.showModal();
+      console.log("IS OPEN")
       setIsModalOpen(true);
     },
     close: () => {
       dialogRef.current.close();
+      console.log("IS CLOSED")
+
       setIsModalOpen(false);
     },
   }));
@@ -36,9 +39,7 @@ export default function LoginModal({ ref }) {
     setIsLogin((prev) => !prev);
   }
 
-  function handleStep(value){
-    setStep(value)
-  }
+  
   return (
     <dialog
       ref={dialogRef}
@@ -46,7 +47,7 @@ export default function LoginModal({ ref }) {
     >
       <div
         className={`absolute top-2 right-2 ${step > 1 ? "hidden": ""}`}
-        onClick={() => dialogRef.current.close()}
+        onClick={() => ref.current.close()}
       >
         <X size={32} />
       </div>
@@ -63,6 +64,7 @@ export default function LoginModal({ ref }) {
           )}
         </div>
       </div>
+     
     </dialog>
   );
 }

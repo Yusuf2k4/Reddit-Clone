@@ -7,11 +7,17 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     async function restoreUser() {
-      const data = await getUser();
-      setUser(data);
+      try {
+        const data = await getUser(); // this throws 401 when not logged in
+        setUser(data);
+      } catch (err) {
+        console.log("No logged in user");
+        setUser(null); // IMPORTANT: prevent inconsistent state
+      }
     }
     restoreUser();
   }, []);
+
   function saveUser(User) {
     setUser(User);
   }

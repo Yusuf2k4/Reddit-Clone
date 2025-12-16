@@ -55,7 +55,7 @@ export default function SignUp({ handleLogin, dialogRef, setStep, step }) {
     const logData = await logUser(data);
     const user = await getUser();
     saveUser(user);
-    dialogRef.current.close();
+    dialogRef.current.close(); // BUG HERE 
     navigate("/");
     
   }

@@ -43,6 +43,7 @@ public class UserService {
         user.setEmail(userRequestDTO.getEmail());
         user.setGender(userRequestDTO.getGender());
         user.setPassword(encoder.encode(password));
+        user.setProvider("LOCAL");
         user.setCommunityFollowing(new ArrayList<>());
         user.setFollowers(new ArrayList<>());
         user.setFollowing(new ArrayList<>());

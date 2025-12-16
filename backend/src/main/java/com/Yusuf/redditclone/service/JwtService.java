@@ -2,6 +2,7 @@ package com.Yusuf.redditclone.service;
 
 import com.Yusuf.redditclone.model.UserPrincipal;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -60,8 +61,16 @@ public class JwtService {
 
 
     public boolean validateToken(String token) {
-        return !isTokenExpired(token);
+        try {
+            Jwts.parser()
+                    .setSigningKey(key)
+                    .parseClaimsJws(token); // verifies signature & expiration
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
+
 
 
 

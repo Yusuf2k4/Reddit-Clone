@@ -76,9 +76,9 @@ const RootLayout = () => {
             {/* Always visible on all sizes (you can hide if you prefer to show profile only when logged in) */}
             <Link to="/profile" className="">
               <img
-                src="profile.jpg"
+                src="https://www.svgrepo.com/show/57063/reddit.svg"
                 alt="profile"
-                className={`h-8 w-8 rounded-full object-cover cursor-pointer ${user ? "": "hidden"}`}
+                className={`h-8 w-8 rounded-full object-cover cursor-pointer bg-white ${user ? "": "hidden"}`}
               />
             </Link>
           </div>

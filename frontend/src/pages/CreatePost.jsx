@@ -18,6 +18,7 @@ import MediaFile from "../components/create Post/MediaFile";
 import Link from "../components/create Post/Link";
 import TextBox from "../components/create Post/TextBox";
 import { uploadImage } from "../firebase/storage";
+import CommunityAvatar from "../util/loading screen/CommunityAvatar";
 
 const CreatePost = () => {
   const [dropdownIsOpen, setDropDownIsOpen] = useState(false);
@@ -144,9 +145,7 @@ const CreatePost = () => {
             <div className="flex items-center gap-3 overflow-hidden">
               {!dropdownIsOpen && community ? (
                 // Assuming community has an icon or just use generic
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex-shrink-0">
-                  <img src={community?.logo} alt="" className="rounded-full" />
-                </div>
+                <CommunityAvatar src={community.logo} />
               ) : (
                 !community && (
                   <Circle size={24} className="text-gray-400 flex-shrink-0" />
@@ -154,8 +153,8 @@ const CreatePost = () => {
               )}
 
               {!dropdownIsOpen && (
-                <p className="text-gray-200 text-sm font-medium truncate">
-                  {community ? community.name : "Select a community"}
+                <p className="text-gray-200 text- font-bold truncate">
+                  {community ? "r/"+community.name : "Select a community"}
                 </p>
               )}
               {dropdownIsOpen && (
@@ -175,6 +174,7 @@ const CreatePost = () => {
                   ref={inputRef}
                   onChange={handleCommunityName}
                   onClick={(e) => e.stopPropagation()}
+                  
                 />
               )}
             </div>

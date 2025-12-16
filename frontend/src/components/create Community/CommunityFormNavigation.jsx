@@ -1,13 +1,25 @@
 import React from "react";
 
-function CommunityFormNavigation({ step, setStep, handleSubmit, isSubmitting}) {
+function CommunityFormNavigation({
+  step,
+  setStep,
+  handleSubmit,
+  isSubmitting,
+  handleReset,
+}) {
+  function resetForm() {
+    if (step === 1) {
+      handleReset();
+    }
+    setStep(Math.max(0, step - 1));
+  }
   return (
     <div className="w-full bg-[#1a1a1b] border-t border-gray-800 p-4 shrink-0 flex justify-end gap-3 md:gap-4">
       <button
         className="px-6 py-2 rounded-full border border-gray-600 text-gray-300 font-medium text-sm
         hover:bg-gray-800 hover:border-gray-500 transition-all duration-200"
         type="button"
-        onClick={() => setStep(Math.max(0, step - 1))}
+        onClick={resetForm}
       >
         {step === 1 ? "Cancel" : "Back"}
       </button>

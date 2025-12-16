@@ -23,7 +23,7 @@ export default function Login({ handleLogin, dialogRef }) {
     const logData = await logUser(formData)
     const userData = await getUser();
     saveUser(userData)
-    dialogRef.current.close();
+    dialogRef.current.close(); // BUG HERE (this does not work)
     navigate("/")
   }
   

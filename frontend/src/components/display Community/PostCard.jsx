@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 
 const PostCard = ({ post }) => {
-  console.log(post);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   // NEW STATE: Tracks if the currently selected media item is loading
   const [mediaLoading, setMediaLoading] = useState(true);

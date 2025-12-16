@@ -25,9 +25,6 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
-    MyUserDetailService myUserDetailService;
-
-    @Autowired
     JwtService jwtService;
 
     @Autowired
@@ -36,6 +33,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = extractJwt(request);
         if(token != null && SecurityContextHolder.getContext().getAuthentication() == null){
            String userId = jwtService.extractId(token);

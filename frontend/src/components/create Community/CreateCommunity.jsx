@@ -21,6 +21,8 @@ import CommunityFormNavigation from "./CommunityFormNavigation";
 import Spinner from "../../util/loading screen/Spinner";
 
 const CreateCommunity = forwardRef((props, ref) => {
+
+  
   let topics = useLoaderData();
 
   // --- STATE ---
@@ -63,6 +65,7 @@ const CreateCommunity = forwardRef((props, ref) => {
     },
     close: () => {
       setIsModalOpen(false);
+      
       dialogRef.current?.close();
     },
   }));
@@ -87,14 +90,7 @@ const CreateCommunity = forwardRef((props, ref) => {
         // 1. Close Modal
         dialogRef.current.close();
         setIsModalOpen(false);
-        setFinalBanner(undefined);
-        setFinalLogo(undefined);
-        setBanner(undefined);
-        setLogo(undefined);
-        setSelectedTags([]);
-        setCommunityDesc("Community Description");
-        setCommunityName("r/communityName");
-        setStep(1);
+        resetForm()
 
         // 2. Redirect manually
         navigate(`/r/${fetcher.data.communityName}`);
@@ -195,7 +191,20 @@ const CreateCommunity = forwardRef((props, ref) => {
       encType: "multipart/form-data",
     });
   }
-
+  function resetForm(){
+    setSelectedTags([]);
+    setStep(1);
+    setCommunityName("communityName")
+    setCommunityDesc("Community Description");
+    setBanner();
+    setBannerPreview();
+    setFinalBanner();
+    setFinalBannerUrl();
+    setLogo()
+    setLogoPreview()
+    setFinalLogo()
+    setFinalLogoUrl()
+  }
   return (
     <>
       <dialog
@@ -227,7 +236,9 @@ const CreateCommunity = forwardRef((props, ref) => {
               // prevent closing while submitting
               if (isSubmitting) return;
               setIsModalOpen(false);
+              resetForm()
               dialogRef.current?.close();
+              
             }}
             className={`text-gray-500 hover:text-white pb-1 ${
               isSubmitting ? "opacity-50 cursor-not-allowed" : ""
@@ -283,6 +294,7 @@ const CreateCommunity = forwardRef((props, ref) => {
           handleSubmit={handleSubmit}
           // pass down submitting state in case the nav wants to disable buttons
           isSubmitting={isSubmitting}
+          handleReset={resetForm}
         />
 
         {isSubmitting && (

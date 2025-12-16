@@ -29,7 +29,6 @@ export async function createCommunity({ request }) {
   const logo = formData.get("logo");
   const banner = formData.get("Banner");
   const tagList = JSON.parse(formData.get("tagList"));
-  console.log(tagList);
 
   const logoURL = await uploadImage(logo, "Image");
   const bannerURL = await uploadImage(banner, "Banner");
@@ -41,12 +40,13 @@ export async function createCommunity({ request }) {
     banner: bannerURL,
     tagList,
   };
-  console.log(data);
+
 
   const response = await fetch("http://localhost:8080/create-community", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
+    credentials: "include"
   });
   if (!response.ok) {
     return { error: "Backend failed to save" };
