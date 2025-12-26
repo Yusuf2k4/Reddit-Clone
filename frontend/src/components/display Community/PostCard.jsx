@@ -42,7 +42,7 @@ const PostCard = ({ post }) => {
     setCurrentMediaIndex(prevIndex);
   };
   const handleChange = () => {
-    console.log(post.id);
+    
     navigate(`${post.id}/comments`);
   };
   return (

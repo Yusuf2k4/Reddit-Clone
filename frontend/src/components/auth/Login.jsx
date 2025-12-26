@@ -17,7 +17,7 @@ export default function Login({ handleLogin, dialogRef }) {
       [feild]: value,
     }));
   }
-  console.log(formData);
+ 
   
   async function LogInUser(){
     const logData = await logUser(formData)

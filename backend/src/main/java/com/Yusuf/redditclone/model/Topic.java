@@ -16,12 +16,12 @@ import java.util.List;
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    String name;
+    private String name;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    List<Tag> tags;
+    private List<Tag> tags;
 
 }

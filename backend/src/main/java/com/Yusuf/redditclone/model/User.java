@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,46 +17,47 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    String userName;
-    String email;
-    String password;
-    String gender;
-    String provider;
+    private String userName;
+    private String email;
+    private String password;
+    private String gender;
+    private String provider;
 
 
     @CreatedDate
-    Instant createdAt;
+    private Instant createdAt;
 
     @ManyToMany
     @JsonManagedReference
-    List<Community> communityFollowing;
+    private List<Community> communityFollowing;
 
     @ManyToMany
     @JoinTable(name = "user_following")
     @JsonManagedReference
-    List<User> following;
+    private List<User> following;
 
     @ManyToMany(mappedBy = "following")
     @JsonBackReference
-    List<User> followers;
+    private List<User> followers;
 
     @OneToMany(mappedBy = "author")
     @JsonBackReference
-    List<Post> postList;
+    private List<Post> postList;
 
     @ManyToMany
     @JsonManagedReference
-    List<Post> savedPost;
+    private List<Post> savedPost;
 
     @ManyToMany
     @JsonManagedReference
-    List<Tag> tagList;
+    private List<Tag> tagList;
 
 
 

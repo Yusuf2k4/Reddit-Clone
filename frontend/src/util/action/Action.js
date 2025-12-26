@@ -9,7 +9,7 @@ export async function createPost({ request }) {
     return { error: "Backend failed to save" };
   }
   const data = await response.json();
-  console.log(data);
+
 
   return { ok: true, id: data, communityName: payload.community };
 }

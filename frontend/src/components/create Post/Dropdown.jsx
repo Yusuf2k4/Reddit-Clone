@@ -5,19 +5,19 @@ import CommunityAvatar from "../../util/loading screen/CommunityAvatar";
 
 export default function Dropdown({ dropDownIsOpen, onSelect, communityName }) {
   // Fallback if loader data is missing during development
-  const data = useLoaderData()
+  const data = useLoaderData();
   const [communities, setCommunities] = useState(data);
 
   useEffect(() => {
-    if (!communityName){
-      setCommunities(data)
+    if (!communityName) {
+      setCommunities(data);
       return;
-    };
-
-    if(communityName === ""){
-      setCommunities(useLoaderData())
     }
-    console.log(communityName)
+
+    if (communityName === "") {
+      setCommunities(useLoaderData());
+    }
+
     const delay = setTimeout(() => {
       async function getCommunities() {
         const response = await fetch(
@@ -37,9 +37,7 @@ export default function Dropdown({ dropDownIsOpen, onSelect, communityName }) {
 
   return (
     <div className="absolute top-full left-0 mt-2 w-full rounded-lg shadow-xl shadow-black/50 z-50 bg-zinc-800 border border-zinc-700 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
-      <div className="p-2">
-        
-      </div>
+      <div className="p-2"></div>
       <ul className="max-h-80 overflow-y-auto custom-scrollbar">
         {communities?.length > 0 ? (
           communities.map((community, idx) => (
@@ -48,9 +46,22 @@ export default function Dropdown({ dropDownIsOpen, onSelect, communityName }) {
               onClick={() => onSelect(community)}
               className="px-4 py-2.5 text-gray-200 hover:bg-zinc-700 cursor-pointer transition-colors flex items-center gap-3"
             >
-              
-                <CommunityAvatar src={community.logo}/>     
-              
+              {community.logo ? (
+                <CommunityAvatar src={community.logo} />
+              ) : (
+                <div
+                  className="
+                                      h-8 w-8
+                                      sm:h-8 sm:w-8
+                                      rounded-full
+                                      bg-orange-600
+                                      flex items-center justify-center
+                                      text-white font-bold
+                                      text-sm sm:text-base
+                                    "
+                >r/</div>
+              )}
+
               <span className="text-sm  font-bold truncate">
                 r/{community.name}
               </span>

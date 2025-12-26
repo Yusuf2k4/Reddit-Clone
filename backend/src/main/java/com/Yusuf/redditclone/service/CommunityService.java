@@ -30,6 +30,7 @@ public class CommunityService {
         newCommunity.setBanner(communityDTO.getBanner());
         newCommunity.setLogo(communityDTO.getLogo());
 
+
         for(String tags: communityDTO.getTagList()){
             Tag getTag = tagRepository.findByName(tags);
             tagArrayList.add(getTag);

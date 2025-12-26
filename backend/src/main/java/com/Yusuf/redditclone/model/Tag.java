@@ -17,19 +17,19 @@ import java.util.List;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    String name;
+    private String name;
 
     @ManyToOne
     @JsonBackReference
-    Topic topic;
+    private Topic topic;
 
     @ManyToMany(mappedBy = "tagList")
     @JsonIgnore
-    List<Community> communityList;
+    private List<Community> communityList;
 
     @ManyToMany(mappedBy = "tagList")
     @JsonIgnore
-    List<User> userList;
+    private List<User> userList;
 }

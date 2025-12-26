@@ -29,10 +29,24 @@ export async function createCommunity({ request }) {
   const logo = formData.get("logo");
   const banner = formData.get("Banner");
   const tagList = JSON.parse(formData.get("tagList"));
+  let logoURL = "";
+  let bannerURL = "";
+  if (logo instanceof File && logo.size > 0) {
+    logoURL = await uploadImage(logo, "Image");
+  }
+  else{
+    logoURL = null;
+  }
 
-  const logoURL = await uploadImage(logo, "Image");
-  const bannerURL = await uploadImage(banner, "Banner");
+  // upload banner only if valid file
+  if (banner instanceof File && banner.size > 0) {
+    bannerURL = await uploadImage(banner, "Banner");
+  }
+  else{
+    bannerURL = null;
+  }
 
+  
   const data = {
     name,
     description,
@@ -41,12 +55,13 @@ export async function createCommunity({ request }) {
     tagList,
   };
 
+  
 
   const response = await fetch("http://localhost:8080/create-community", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
-    credentials: "include"
+    credentials: "include",
   });
   if (!response.ok) {
     return { error: "Backend failed to save" };

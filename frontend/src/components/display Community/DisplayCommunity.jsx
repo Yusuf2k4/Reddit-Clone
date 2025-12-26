@@ -13,6 +13,7 @@ function DisplayCommunity() {
   function handlePost() {
     navigate(`/r/${community.name}/post`);
   }
+  console.log(community);
 
   return (
     <div className="w-full min-h-screen bg-black/5 pb-10">
@@ -21,28 +22,55 @@ function DisplayCommunity() {
         {/* Banner Container - Stays Full Width relative to the Outlet */}
         <div className="relative w-full">
           {/* Banner */}
-          <ImageWithSkeleton
-            src={community.banner}
-            alt="Banner"
-            className="w-full h-[100px] sm:h-[140px] md:h-[150px]"
-            skeletonClassName="rounded-none"
-          />
+          {community.banner ? (
+            <ImageWithSkeleton
+              src={community.banner}
+              alt="Banner"
+              className="w-full h-[100px] sm:h-[140px] md:h-[150px]"
+              skeletonClassName="rounded-none"
+            />
+          ) : (
+            <div
+              className="
+        w-full h-[100px] sm:h-[140px] md:h-[150px]
+        bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800
+      "
+            />
+          )}
 
           {/* Avatar */}
           <div className="absolute -bottom-10 sm:-bottom-12 left-4 sm:left-8">
-            <ImageWithSkeleton
-              src={community.logo}
-              alt="Logo"
-              className="
-          h-20 w-20 
-          sm:h-24 sm:w-24 
-          md:h-32 md:w-32 
-          rounded-full 
-          border-4 border-[#1c1c1c] 
-          bg-white
-        "
-              skeletonClassName="rounded-full"
-            />
+            {community.logo ? (
+              <ImageWithSkeleton
+                src={community.logo}
+                alt="Logo"
+                className="
+                            h-20 w-20 
+                            sm:h-24 sm:w-24 
+                            md:h-32 md:w-32 
+                            rounded-full 
+                            border-4 border-[#1c1c1c] 
+                            bg-white
+                          "
+                skeletonClassName="rounded-full"
+              />
+            ) : (
+              <div
+                className="
+                              h-20 w-20 
+                              sm:h-24 sm:w-24 
+                              md:h-32 md:w-32 
+                              rounded-full
+                              border-4 border-[#1c1c1c]
+                              bg-orange-600
+                              flex items-center justify-center
+                              text-white font-bold
+                              text-lg sm:text-xl md:text-4xl
+                            "
+              >
+                r/
+              </div>
+            )}
           </div>
         </div>
 
@@ -96,13 +124,25 @@ function DisplayCommunity() {
               </div>
 
               <div className="flex items-center gap-3 mb-3">
-                <CommunityAvatar src={community.logo} />
-                {/* <ImageWithSkeleton
-                  src={community.logo}
-                  alt="Banner"
-                  className="w-8 h-8 rounded-full"
-                  skeletonClassName="rounded-none"
-                /> */}
+                {community.logo ? (
+                  <CommunityAvatar src={community.logo} />
+                ) : (
+                  <div
+                    className="
+                                      h-10 w-10
+                                      sm:h-12 sm:w-12
+                                      rounded-full
+                                      bg-indigo-600
+                                      flex items-center justify-center
+                                      text-white font-bold
+                                      text-sm sm:text-base
+                                    "
+                  >
+                    
+                  </div>
+                )}
+
+               
                 <span className="font-bold text-white">r/{community.name}</span>
               </div>
 

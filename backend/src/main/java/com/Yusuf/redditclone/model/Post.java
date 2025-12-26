@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,32 +18,34 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String title;
-    String bodyText;
-    String bodyHtml;
+    private int id;
+
+    private String title;
+    private String bodyText;
+    private String bodyHtml;
 
     @ElementCollection
-    List<Media> media;
+    private List<Media> media;
 
     @CreatedDate
-    Instant createdAt;
+    private Instant createdAt;
 
     @LastModifiedDate
-    Instant updatedAt;
+    private Instant updatedAt;
 
     @ManyToOne
     @JsonBackReference
-    Community community;
+    private Community community;
 
     @ManyToOne
     @JsonManagedReference
-    User author;
+    private User author;
 
     @ManyToMany(mappedBy = "savedPost")
     @JsonBackReference
-    List<User> savedBy;
+    private List<User> savedBy;
 }

@@ -7,10 +7,7 @@ export async function getCommunities({req, res}){
 
 export async function getPostById({params} ){
     const {id} = params
-    
-
     const respone = await fetch(`http://localhost:8080/post/${id}`)
     const data = await respone.json();
-    console.log(data)
     return data;
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,25 +16,28 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Community {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String name;
-    String description;
+    private int id;
+    private String name;
+    private String description;
+
     @CreatedDate
-    Instant createdAt;
-    String logo;
-    String banner;
+    private Instant createdAt;
+
+    private String logo;
+    private String banner;
 
     @ManyToMany(mappedBy = "communityFollowing")
     @JsonBackReference
-    List<User> userFollowing;
+    private List<User> userFollowing;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
-    List<Post> postList;
+    private List<Post> postList;
 
     @ManyToMany
-    List<Tag> tagList;
+    private List<Tag> tagList;
 }
