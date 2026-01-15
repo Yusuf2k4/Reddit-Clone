@@ -30,34 +30,43 @@ public class User {
     private String gender;
     private String provider;
 
-
     @CreatedDate
     private Instant createdAt;
 
     @ManyToMany
     @JsonManagedReference
-    private List<Community> communityFollowing;
-
-    @ManyToMany
-    @JoinTable(name = "user_following")
-    @JsonManagedReference
-    private List<User> following;
-
-    @ManyToMany(mappedBy = "following")
-    @JsonBackReference
-    private List<User> followers;
-
-    @OneToMany(mappedBy = "author")
-    @JsonBackReference
-    private List<Post> postList;
-
-    @ManyToMany
-    @JsonManagedReference
-    private List<Post> savedPost;
-
-    @ManyToMany
-    @JsonManagedReference
     private List<Tag> tagList;
+
+    
+//    @ManyToMany
+//    @JsonManagedReference
+//    private List<Community> communityFollowing;
+//
+//    @ManyToMany
+//    @JoinTable(name = "user_following")
+//    @JsonManagedReference
+//    private List<User> following;
+//
+//    @ManyToMany(mappedBy = "following")
+//    @JsonBackReference
+//    private List<User> followers;
+//
+//    @OneToMany(mappedBy = "author")
+//    @JsonBackReference
+//    private List<Post> postList;
+//
+//    @ManyToMany
+//    @JsonManagedReference
+//    private List<Post> savedPost;
+
+
+
+
+//    @OneToMany(mappedBy = "user")
+//    @JsonManagedReference
+//    private List<Votes> votes;
+
+
 
 
 

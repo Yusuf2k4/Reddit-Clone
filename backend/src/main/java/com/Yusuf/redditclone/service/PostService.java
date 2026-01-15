@@ -38,15 +38,9 @@ public class PostService {
         String communityName = postRequestDTO.getCommunity();
         Community community = communityRepository.getByName(communityName);
         newPost.setCommunity(community);
-
+        System.out.println("In Posts");
         postRepository.save(newPost);
 
-        if(community != null){
-            List<Post> postList = community.getPostList();
-            postList.add(newPost);
-           communityRepository.save(community);
-
-        }
         return newPost.getId();
 
 
@@ -69,11 +63,15 @@ public class PostService {
              postResponseDTO.setCreatedBy("u/wholesome");
              postResponseDTO.setLogo(post.getCommunity().getLogo());
              postResponseDTO.setMedia(post.getMedia());
-
              return postResponseDTO;
 
          }
-        System.out.println();
+
          return new PostResponseDTO();
+    }
+
+    public List<PostResponseDTO> getPostByCommunityName(String name) {
+        List<Post> post =  postRepository.findByCommunity_Name(name);
+        
     }
 }

@@ -18,6 +18,7 @@ public class PostController {
 
     @PostMapping("/create/post")
     public int createPost(@RequestBody PostRequestDTO postRequestDTO){
+        System.out.println("In controller");
         return postService.createPost(postRequestDTO);
     }
 
@@ -26,7 +27,12 @@ public class PostController {
         return postService.getPostById(id);
     }
     @GetMapping("/posts")
-    public List<Post> getPosts(){
+    public List<Post> getAllPosts(){
         return postService.getPosts();
+    }
+
+    @GetMapping("/{communityName}/posts")
+    public List<PostResponseDTO> getPostsByCommunityName(@PathVariable("communityName") String name){
+        return postService.getPostByCommunityName(name);
     }
 }

@@ -30,14 +30,16 @@ public class Community {
     private String logo;
     private String banner;
 
-    @ManyToMany(mappedBy = "communityFollowing")
-    @JsonBackReference
-    private List<User> userFollowing;
-
-    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Post> postList;
-
     @ManyToMany
     private List<Tag> tagList;
+
+
+//    @ManyToMany(mappedBy = "communityFollowing")
+//    @JsonBackReference
+//    private List<User> userFollowing;
+
+//    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    @JsonManagedReference
+//    private List<Post> postList;
+
 }

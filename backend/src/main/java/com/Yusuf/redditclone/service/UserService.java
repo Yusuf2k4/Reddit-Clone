@@ -44,12 +44,6 @@ public class UserService {
         user.setGender(userRequestDTO.getGender());
         user.setPassword(encoder.encode(password));
         user.setProvider("LOCAL");
-        user.setCommunityFollowing(new ArrayList<>());
-        user.setFollowers(new ArrayList<>());
-        user.setFollowing(new ArrayList<>());
-        user.setPostList(new ArrayList<>());
-        user.setSavedPost(new ArrayList<>());
-
         List<Tag> tagList = new ArrayList<>();
         for(String tags: userRequestDTO.getTags()){
             Tag findtag = tagRepository.findByName(tags);

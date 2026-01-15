@@ -24,7 +24,6 @@ public class CommunityService {
         List<Tag> tagArrayList = new ArrayList<>();
 
         Community newCommunity = new Community();
-        newCommunity.setPostList(new ArrayList<>());
         newCommunity.setName(communityDTO.getName());
         newCommunity.setDescription(communityDTO.getDescription());
         newCommunity.setBanner(communityDTO.getBanner());

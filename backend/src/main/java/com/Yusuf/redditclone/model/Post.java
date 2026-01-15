@@ -38,14 +38,18 @@ public class Post {
     private Instant updatedAt;
 
     @ManyToOne
-    @JsonBackReference
+    @JoinColumn(name = "community_id")
     private Community community;
 
     @ManyToOne
-    @JsonManagedReference
+    @JoinColumn(name = "author_id")
     private User author;
 
-    @ManyToMany(mappedBy = "savedPost")
-    @JsonBackReference
-    private List<User> savedBy;
+//    @ManyToMany(mappedBy = "savedPost")
+//    @JsonBackReference
+//    private List<User> savedBy;
+//
+//    @OneToMany(mappedBy = "post")
+//    @JsonManagedReference
+//    private List<Votes> votes;
 }

@@ -13,4 +13,6 @@ public class PostResponseDTO {
     String logo;
     List<Media> media;
     String createdBy;
+    int totalCount;
+    int userCount;
 }

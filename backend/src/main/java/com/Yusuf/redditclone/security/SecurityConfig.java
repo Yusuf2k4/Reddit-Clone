@@ -46,15 +46,15 @@ public class SecurityConfig {
                         .requestMatchers(
                         "/communities", "/r/**", "communities/**"
                                 , "post/**", "/post","/topic", "/register-user", "/login","/oauth2/**",
-                                "/login/oauth2/**")
+                                "/login/oauth2/**","/import", "/*/posts")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(oauth -> oauth.successHandler(oAuth2SuccessHandler))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-                .httpBasic(Customizer.withDefaults());
+
 
         return http.build();
     }

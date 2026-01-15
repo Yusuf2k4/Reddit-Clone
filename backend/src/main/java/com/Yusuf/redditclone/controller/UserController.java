@@ -48,12 +48,11 @@ public class UserController {
                         .httpOnly(true)
                         .secure(false)
                         .path("/")
-
                         .maxAge(10L * 24 * 60 * 60)
                         .sameSite("strict")
                         .build();
                 response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-                return  "login Successful";
+                return  "login Successful" + cookie + " ";
             }
 
         } catch (Exception e) {

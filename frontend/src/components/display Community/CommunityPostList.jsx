@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PostCard from './PostCard'; 
 
 function CommunityPostList({ community }) {
+  
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    async function getCommunityPosts(){
+      const response = await fetch(`http://localhost:8080/${community.name}/posts`)
+      const data = await response.json();
+      console.log(data);
+      setPosts(data);
+    }
+    getCommunityPosts();
+  },[community.name])
   // Guard clause
-  if (!community || !community.postList || community.postList.length === 0) {
+  if (!community || !posts || posts.length === 0) {
     return (
         <div className="text-center p-8 text-gray-400">
             No posts found in the community.
@@ -16,13 +27,10 @@ function CommunityPostList({ community }) {
       {/* Heading color adjusted for dark backgrounds */}
      
       <div className="flex flex-col space-y-4">
-        {community.postList.map((post) => (
+        {posts.map((post) => (
           <PostCard 
             key={post.id} 
-            post={{
-                ...post,
-                
-            }} 
+            post={post} 
           />
         ))}
       </div>

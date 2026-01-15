@@ -13,7 +13,7 @@ function DisplayCommunity() {
   function handlePost() {
     navigate(`/r/${community.name}/post`);
   }
-  console.log(community);
+
 
   return (
     <div className="w-full min-h-screen bg-black/5 pb-10">
@@ -129,20 +129,17 @@ function DisplayCommunity() {
                 ) : (
                   <div
                     className="
-                                      h-10 w-10
-                                      sm:h-12 sm:w-12
-                                      rounded-full
-                                      bg-indigo-600
-                                      flex items-center justify-center
-                                      text-white font-bold
-                                      text-sm sm:text-base
-                                    "
-                  >
-                    
-                  </div>
+                      h-10 w-10
+                      sm:h-12 sm:w-12
+                      rounded-full
+                      bg-indigo-600
+                      flex items-center justify-center
+                      text-white font-bold
+                      text-sm sm:text-base
+                    "
+                  ></div>
                 )}
 
-               
                 <span className="font-bold text-white">r/{community.name}</span>
               </div>
 

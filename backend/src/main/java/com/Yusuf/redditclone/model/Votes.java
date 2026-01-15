@@ -1,36 +1,32 @@
 package com.Yusuf.redditclone.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Tag {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"post_id","user_id"}))
+public class Votes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    private String name;
+    private int type;
 
     @ManyToOne
-    @JoinColumn(name = "topic_id")
+    @JoinColumn(name = "post_id")
     @JsonBackReference
-    private Topic topic;
+    private Post post;
 
-    @ManyToMany(mappedBy = "tagList")
-    @JsonIgnore
-    private List<Community> communityList;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
-    @ManyToMany(mappedBy = "tagList")
-    @JsonIgnore
-    private List<User> userList;
+
 }
