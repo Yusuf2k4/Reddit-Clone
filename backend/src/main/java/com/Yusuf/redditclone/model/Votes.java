@@ -20,12 +20,10 @@ public class Votes {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    @JsonBackReference
     private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
     private User user;
 
 

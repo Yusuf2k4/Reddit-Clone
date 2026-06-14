@@ -13,7 +13,7 @@ public class PostRequestDTO {
     String title;
     String bodyText;
     String bodyHtml;
-    List<Media> media;
+    List<MediaDTO> media;
     String community;
     String createdBy;
 }

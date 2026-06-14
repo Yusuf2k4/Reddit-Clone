@@ -1,8 +1,5 @@
 package com.Yusuf.redditclone.model;
 
-import com.Yusuf.redditclone.DTO.Media;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,8 +25,6 @@ public class Post {
     private String bodyText;
     private String bodyHtml;
 
-    @ElementCollection
-    private List<Media> media;
 
     @CreatedDate
     private Instant createdAt;
@@ -45,11 +40,4 @@ public class Post {
     @JoinColumn(name = "author_id")
     private User author;
 
-//    @ManyToMany(mappedBy = "savedPost")
-//    @JsonBackReference
-//    private List<User> savedBy;
-//
-//    @OneToMany(mappedBy = "post")
-//    @JsonManagedReference
-//    private List<Votes> votes;
 }

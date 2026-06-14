@@ -1,12 +1,15 @@
 package com.Yusuf.redditclone.service;
 
-import com.Yusuf.redditclone.DTO.PostRequestDTO;
-import com.Yusuf.redditclone.DTO.PostResponseDTO;
-import com.Yusuf.redditclone.model.Community;
-import com.Yusuf.redditclone.model.Post;
+import com.Yusuf.redditclone.DTO.*;
+import com.Yusuf.redditclone.model.*;
 import com.Yusuf.redditclone.repository.CommunityRepository;
+import com.Yusuf.redditclone.repository.MediaRepository;
 import com.Yusuf.redditclone.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,26 +23,40 @@ public class PostService {
 
     @Autowired
     CommunityRepository communityRepository;
-    public int createPost(PostRequestDTO postRequestDTO){
+
+    @Autowired
+    MediaRepository mediaRepository;
+
+
+
+    public int createPost(PostRequestDTO postRequestDTO) {
 
         Post newPost = new Post();
         newPost.setTitle(postRequestDTO.getTitle());
         newPost.setBodyText(postRequestDTO.getBodyText());
         newPost.setBodyHtml(postRequestDTO.getBodyHtml());
-
-
-        if(postRequestDTO.getMedia() == null){
-            newPost.setMedia(new ArrayList<>());
-        }
-        else{
-            newPost.setMedia(postRequestDTO.getMedia());
-        }
-
         String communityName = postRequestDTO.getCommunity();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal details= (UserPrincipal) auth.getPrincipal();
+        User user = details.getUser();
+
+        newPost.setAuthor(user);
         Community community = communityRepository.getByName(communityName);
         newPost.setCommunity(community);
-        System.out.println("In Posts");
+
+
+
         postRepository.save(newPost);
+
+        if (postRequestDTO.getMedia() != null) {
+            for(MediaDTO media: postRequestDTO.getMedia()){
+                Media newMedia = new Media();
+                newMedia.setType(media.getType());
+                newMedia.setMedia(media.getMedia());
+                newMedia.setPost(newPost);
+                mediaRepository.save(newMedia);
+            }
+        }
 
         return newPost.getId();
 
@@ -52,26 +69,47 @@ public class PostService {
     }
 
     public PostResponseDTO getPostById(int id) {
-         Post post = postRepository.findById(id).orElse(null);
-
-         if(post != null){
-             PostResponseDTO postResponseDTO = new PostResponseDTO();
-             postResponseDTO.setTitle(post.getTitle());
-             postResponseDTO.setCommunity(post.getCommunity().getName());
-             postResponseDTO.setBodyHtml(post.getBodyHtml());
-             postResponseDTO.setBodyText(post.getBodyText());
-             postResponseDTO.setCreatedBy("u/wholesome");
-             postResponseDTO.setLogo(post.getCommunity().getLogo());
-             postResponseDTO.setMedia(post.getMedia());
-             return postResponseDTO;
-
-         }
-
-         return new PostResponseDTO();
+        Post post = postRepository.findById(id).orElse(null);
+        List<MediaDTO> media = mediaRepository.getAllById(id);
+        List<PostResponseDTO> postResponseDTOS = new ArrayList<>();
+        PostResponseDTO response = new PostResponseDTO();
+        response.setName(post.getCommunity().getName());
+        response.setTitle(post.getTitle());
+        response.setLogo(post.getCommunity().getLogo());
+        response.setUserName("u/"+post.getAuthor().getUserName());
+        response.setBodyHtml(post.getBodyHtml());
+        response.setBodyText(post.getBodyText());
+        response.setMedia(media);
+        return response;
     }
 
-    public List<PostResponseDTO> getPostByCommunityName(String name) {
-        List<Post> post =  postRepository.findByCommunity_Name(name);
-        
+    public Slice<CommunityPostsResponseDTO> getPostsByCommunity(String community, Pageable pageable) {
+
+        Slice<CommunityPostsResponseDTO> communityPostsResponseDTOList = postRepository.getPostByCommunity(community, pageable);
+
+        for (CommunityPostsResponseDTO communityPostsResponseDTO : communityPostsResponseDTOList) {
+            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(communityPostsResponseDTO.getId());
+            communityPostsResponseDTO.setMediaResponseDTOList(mediaDTOS);
+        }
+        return communityPostsResponseDTOList;
     }
+//
+//    public List<PostResponseDTO> getPostByCommunityName(String name) {
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Integer userId = null;
+//
+//        if (authentication != null
+//                && authentication.isAuthenticated()
+//                && authentication.getPrincipal() instanceof UserPrincipal userPrincipal) {
+//
+//            userId = userPrincipal.getId();
+//        }
+//        System.out.println(name);
+//        return postRepository.findByCommunityName(name, userId);
+//
+//    }
+
+
 }
+

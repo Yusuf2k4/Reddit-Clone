@@ -14,15 +14,15 @@ const PostCard = ({ post }) => {
   // NEW STATE: Tracks if the currently selected media item is loading
   const [mediaLoading, setMediaLoading] = useState(true);
 
-  const authorName = post.createdBy || "u/Anonymous";
+  const authorName = "u/" + post.userName|| "u/Anonymous";
   const voteCount = post.voteCount || 0;
   const commentCount = post.commentCount || 0;
-  const hasMedia = post.media && post.media.length > 0;
-
+  const hasMedia = post.mediaResponseDTOList && post.mediaResponseDTOList.length > 0;
+  
   // Calculate indices for preloading: previous and next
   const prevIndex =
-    (currentMediaIndex - 1 + post.media.length) % post.media.length;
-  const nextIndex = (currentMediaIndex + 1) % post.media.length;
+    (currentMediaIndex - 1 + post.mediaResponseDTOList.length) % post.mediaResponseDTOList.length;
+  const nextIndex = (currentMediaIndex + 1) % post.mediaResponseDTOList.length;
 
   const navigate = useNavigate();
 
@@ -80,17 +80,17 @@ const PostCard = ({ post }) => {
             )}
 
             {/* Display Current Media */}
-            {post.media[currentMediaIndex].type === "video" ? (
+            {post.mediaResponseDTOList[currentMediaIndex].type === "video" ? (
               <video
                 controls
-                src={post.media[currentMediaIndex].media}
+                src={post.mediaResponseDTOList[currentMediaIndex].media}
                 onLoadedData={handleMediaLoad} // Video loading handler
                 className="max-w-full max-h-full object-contain"
                 style={{ display: mediaLoading ? "none" : "block" }} // Hide video element until loaded
               />
             ) : (
               <img
-                src={post.media[currentMediaIndex].media}
+                src={post.mediaResponseDTOList[currentMediaIndex].media}
                 alt="Post content"
                 onLoad={handleMediaLoad} // Image loading handler
                 onError={handleMediaLoad} // Handle errors just in case
@@ -100,7 +100,7 @@ const PostCard = ({ post }) => {
             )}
 
             {/* Slider Controls (Show only if not loading and more than 1 item) */}
-            {post.media.length > 1 && !mediaLoading && (
+            {post.mediaResponseDTOList.length > 1 && !mediaLoading && (
               <>
                 {/* ChevronLeft Button */}
                 <button
@@ -119,7 +119,7 @@ const PostCard = ({ post }) => {
                 </button>
 
                 <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
-                  {currentMediaIndex + 1} / {post.media.length}
+                  {currentMediaIndex + 1} / {post.mediaResponseDTOList.length}
                 </div>
               </>
             )}

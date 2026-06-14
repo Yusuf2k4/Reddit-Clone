@@ -2,6 +2,7 @@ package com.Yusuf.redditclone.controller;
 
 import com.Yusuf.redditclone.DTO.CommunitiesResponseDTO;
 import com.Yusuf.redditclone.DTO.CommunityDTO;
+import com.Yusuf.redditclone.DTO.CommunityPageResponse;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class CommunityController {
     }
 
     @GetMapping("r/{name}")
-    public Community getCommunity(@PathVariable String name){
+    public CommunityPageResponse getCommunity(@PathVariable String name){
+
         return communityService.getCommunity(name);
     }
 

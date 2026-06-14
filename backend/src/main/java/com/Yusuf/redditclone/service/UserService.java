@@ -72,6 +72,6 @@ public class UserService {
             userTags.add(t.getName());
         }
         userResponseDTO.setTags(userTags);
-        return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(user1, HttpStatus.OK);
     }
 }

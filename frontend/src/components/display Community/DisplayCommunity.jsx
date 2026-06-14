@@ -8,12 +8,12 @@ import CommunityAvatar from "../../util/loading screen/CommunityAvatar";
 
 function DisplayCommunity() {
   const community = useRouteLoaderData("community");
-
   const navigate = useNavigate();
   function handlePost() {
     navigate(`/r/${community.name}/post`);
   }
 
+  
 
   return (
     <div className="w-full min-h-screen bg-black/5 pb-10">
@@ -179,6 +179,7 @@ export async function getCommunity({ params }) {
   if (!response.ok) {
     throw new Error("Not found");
   }
+ 
   const data = response.json();
   return data;
 }

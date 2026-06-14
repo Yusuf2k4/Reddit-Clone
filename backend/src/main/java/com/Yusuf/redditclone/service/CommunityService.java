@@ -2,6 +2,7 @@ package com.Yusuf.redditclone.service;
 
 import com.Yusuf.redditclone.DTO.CommunitiesResponseDTO;
 import com.Yusuf.redditclone.DTO.CommunityDTO;
+import com.Yusuf.redditclone.DTO.CommunityPageResponse;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.model.Tag;
 import com.Yusuf.redditclone.repository.CommunityRepository;
@@ -39,9 +40,18 @@ public class CommunityService {
         communityRepository.save(newCommunity);
     }
 
-    public Community getCommunity(String name) {
+    public CommunityPageResponse getCommunity(String name) {
 
-        return communityRepository.getByName(name);
+        Community community = communityRepository.getByName(name);
+        CommunityPageResponse communityPageResponse = new CommunityPageResponse();
+        communityPageResponse.setId(community.getId());
+        communityPageResponse.setName(community.getName());
+        communityPageResponse.setLogo(community.getLogo());
+        communityPageResponse.setBanner(community.getBanner());
+        communityPageResponse.setDescription(community.getDescription());
+        communityPageResponse.setCreatedAt(community.getCreatedAt());
+        return communityPageResponse;
+
     }
 
     public List<CommunitiesResponseDTO> getCommunities() {

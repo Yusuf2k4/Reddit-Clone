@@ -11,7 +11,6 @@ import { useLoaderData, useNavigate } from "react-router";
 
 export default function DisplayPost() {
   const post = useLoaderData(); 
-
   const media = post?.media || [];
 
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
@@ -158,15 +157,15 @@ export default function DisplayPost() {
           <div className="flex items-center gap-3">
             <img
               src={post.logo}
-              alt={post.community}
+              alt={post.name}
               className="w-10 h-10 rounded-full object-cover"
             />
             <div className="flex flex-col leading-tight">
-              <span className="text-sm font-semibold text-gray-100 hover:cursor-pointer" onClick={() => navigate(`/r/${post.community}`)}>
-                r/{post.community}
+              <span className="text-sm font-semibold text-gray-100 hover:cursor-pointer" onClick={() => navigate(`/r/${post.name}`)}>
+                r/{post.name}
               </span>
               <span className="text-xs text-gray-400 mt-0.5">
-                {post.createdBy}
+                {post.userName}
               </span>
             </div>
           </div>
