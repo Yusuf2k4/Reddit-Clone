@@ -7,7 +7,7 @@ import SignUpStep4 from "./SIgnUpStep4";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../context/UserContext";
-import { getUser, logUser } from "../../util/api";
+import { getUser, logUser, signUpUser } from "../../util/api";
 
 export default function SignUp({ handleLogin, dialogRef, setStep, step }) {
   const { saveUser } = useContext(UserContext);
@@ -42,15 +42,7 @@ export default function SignUp({ handleLogin, dialogRef, setStep, step }) {
   }
 
   async function registerUser(formData) {
-    const response = await fetch("http://localhost:8080/register-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    if (!response.ok) {
-      return { error: "FAILED FOR SOME REASON" };
-    }
-    await response.text();
+    const response = await signUpUser(formData);
     const data = {username: formData.userName, password: formData.password} 
     const logData = await logUser(data);
     const user = await getUser();

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { ImageWithSkeleton } from "../../util/loading screen/ImageWithSkeleton";
 import CommunityAvatar from "../../util/loading screen/CommunityAvatar";
+import { searchCommunities } from "../../util/api";
 
 export default function Dropdown({ dropDownIsOpen, onSelect, communityName }) {
   // Fallback if loader data is missing during development
@@ -20,10 +21,7 @@ export default function Dropdown({ dropDownIsOpen, onSelect, communityName }) {
 
     const delay = setTimeout(() => {
       async function getCommunities() {
-        const response = await fetch(
-          `http://localhost:8080/communities/${communityName}`
-        );
-        const data = await response.json();
+        const data = await searchCommunities(communityName)
         setCommunities(data);
       }
 

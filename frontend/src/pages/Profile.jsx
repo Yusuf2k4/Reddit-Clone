@@ -1,14 +1,11 @@
 import React, { useContext } from "react";
 import { UserContext } from "../context/UserContext";
+import { logout } from "../util/api";
 
 const Profile = () => {
   const { user, saveUser } = useContext(UserContext);
   async function handleLogout() {
-    const response = await fetch("http://localhost:8080/logout", {
-      method: "post",
-      credentials: "include",
-    });
-    const text = await response.text();
+    await logout();
     saveUser(null);
   }
   return (

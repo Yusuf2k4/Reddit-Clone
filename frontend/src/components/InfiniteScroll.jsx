@@ -28,7 +28,7 @@ function InfiniteScroll({getData, hasMore}) {
     },[hasMore,getData])
   return (
     
-    <div ref={observerRef} className='bg-red-600'>FEtching posts</div>
+    <div ref={observerRef} className=''></div>
   )
 }
 

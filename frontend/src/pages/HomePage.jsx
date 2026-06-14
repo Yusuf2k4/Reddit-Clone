@@ -2,6 +2,8 @@ import React from "react";
 import Home from "../components/Home";
 import { uploadImage } from "../firebase/storage";
 import { redirect, useNavigate } from "react-router-dom";
+import CreateCommunity from "../components/create Community/CreateCommunity";
+import { postCommunity } from "../util/api";
 
 const HomePage = () => {
   return (
@@ -13,14 +15,6 @@ const HomePage = () => {
 
 export default HomePage;
 
-export async function getTopics() {
-  const response = await fetch("http://localhost:8080/topic");
-  if (!response.ok) {
-    throw new Error("failed to retreive data");
-  }
-  const data = await response.json();
-  return data;
-}
 
 export async function createCommunity({ request }) {
   const formData = await request.formData();
@@ -55,16 +49,8 @@ export async function createCommunity({ request }) {
     tagList,
   };
 
-  
 
-  const response = await fetch("http://localhost:8080/create-community", {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-    credentials: "include",
-  });
-  if (!response.ok) {
-    return { error: "Backend failed to save" };
-  }
-  return { ok: true, communityName: data.name };
+  const response = await postCommunity(data)
+  return response;
+  
 }

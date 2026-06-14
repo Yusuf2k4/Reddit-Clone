@@ -173,13 +173,3 @@ function DisplayCommunity() {
 
 export default DisplayCommunity;
 
-export async function getCommunity({ params }) {
-  const { communityName } = params;
-  const response = await fetch(`http://localhost:8080/r/${communityName}`);
-  if (!response.ok) {
-    throw new Error("Not found");
-  }
- 
-  const data = response.json();
-  return data;
-}

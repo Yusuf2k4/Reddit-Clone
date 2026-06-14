@@ -1,6 +1,7 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage, { createCommunity, getTopics } from "./pages/HomePage";
+import HomePage, { createCommunity} from "./pages/HomePage";
+import { getTopics } from "./util/api";
 import RootLayout from "./root layouts/RootLayout";
 import Chat from "./pages/Chat";
 
@@ -12,14 +13,12 @@ import Explore from "./pages/Explore";
 import All from "./pages/Communities";
 import { Plus } from "lucide-react";
 import Communities from "./pages/Communities";
-import DisplayCommunity, {
-  getCommunity,
-} from "./components/display Community/DisplayCommunity";
-import { getCommunities, getPostById } from "./util/loader/Loader";
+import DisplayCommunity from "./components/display Community/DisplayCommunity";
+import { getCommunities, getPostById } from "./util/api";
 import ErrorPage from "./pages/ErrorPage";
-import { createPost } from "./util/action/Action";
+import { createPost } from "./util/api";
 import CommunityLayout from "./root layouts/CommunityLayout";
-
+import { getCommunityByName } from "./util/api";
 import DisplayPost from "./components/display post/DisplayPost";
 
 function App() {
@@ -72,7 +71,7 @@ function App() {
           path:"r/:communityName",
           id: "community",
           element:<CommunityLayout />,
-          loader: getCommunity,
+          loader: getCommunityByName,
 
           children: [
             {
