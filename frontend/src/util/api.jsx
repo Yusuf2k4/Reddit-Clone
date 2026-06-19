@@ -136,3 +136,11 @@ export async function fetchPostsByCommunity(communityName, pageNo, size ){
   const data = await response.json();
   return data;
 }
+
+
+// Fetch posts for home page
+export async function getHomeFeed(pageNo,size){
+  const response = await fetch(`http://localhost:8080/posts?page=${pageNo}&size=${size}`);
+  const data = await response.json();
+  return data;
+}

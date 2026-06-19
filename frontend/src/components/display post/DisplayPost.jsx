@@ -8,45 +8,30 @@ import {
   Loader 
 } from "lucide-react";
 import { useLoaderData, useNavigate } from "react-router";
+import MediaCarousel from "../MediaCarousel";
 
 export default function DisplayPost() {
   const post = useLoaderData(); 
   const media = post?.media || [];
+  console.log(post)
 
-  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
-  const [votes, setVotes] = useState(post.votes || 0);
+  const [votes, setVotes] = useState(0)
   const [voteState, setVoteState] = useState(null);
   const [isCommenting, setIsCommenting] = useState(false);
   const [comment, setComment] = useState("");
   
-  // 💡 NEW STATE: Tracks if the current media is loading
-  const [mediaLoading, setMediaLoading] = useState(true); 
+
+
 
   const textareaRef = useRef(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    
-    setCurrentMediaIndex(0);
-    setMediaLoading(true); 
-  }, [media.length]);
-
+ 
   
-  useEffect(() => {
-    if (media.length > 0) {
-        setMediaLoading(true);
-    }
-  }, [currentMediaIndex]);
 
 
-  function prevMedia() {
-    setCurrentMediaIndex((i) => (i - 1 + media.length) % media.length);
-  }
 
-  function nextMedia() {
-    setCurrentMediaIndex((i) => (i + 1) % media.length);
-  }
-
+ 
   function toggleUpvote() {
     if (voteState === "up") {
       setVoteState(null);
@@ -80,74 +65,8 @@ export default function DisplayPost() {
     setIsCommenting(false);
   }
 
-  // 💡 NEW HANDLER: Set loading state to false
-  function handleMediaLoad() {
-    setMediaLoading(false);
-  }
-
- 
-  function renderMediaItem(item) {
-    if (!item) return null;
-
-    const { type, media: src } = item;
-    
-    
-    const mediaClasses = "w-full h-96 object-contain rounded-lg";
-    
-    
-    const loadingStyle = { display: mediaLoading ? 'none' : 'block' };
-
-    if (type === "image") {
-      return (
-        <img
-          src={src}
-          alt={post.title || "media"}
-          className={mediaClasses}
-          onLoad={handleMediaLoad} // 💡 Image load handler
-          onError={handleMediaLoad} // 💡 Handle errors
-          style={loadingStyle} // 💡 Hide until loaded
-        />
-      );
-    }
-
-    // audio/recording
-    if (type === "recording" || type === "audio") {
-      // Audio does not usually need a spinner, but we keep the height consistent
-      return (
-        <div className="flex items-center justify-center h-96"> 
-          <audio controls src={src} className="w-full max-w-sm" />
-        </div>
-      );
-    }
-
-    // video
-    if (type === "video") {
-      return (
-        <video 
-          controls 
-          className={mediaClasses}
-          onLoadedData={handleMediaLoad} // 💡 Video load handler
-          style={loadingStyle} // 💡 Hide until loaded
-        >
-          <source src={src} />
-          Your browser does not support the video tag.
-        </video>
-      );
-    }
-
-    // Fallback: try to render as image
-    return (
-      <img
-        src={src}
-        alt={post.title || "media"}
-        className={mediaClasses}
-        onLoad={handleMediaLoad} 
-        onError={handleMediaLoad} 
-        style={loadingStyle} 
-      />
-    );
-  }
   
+
 
   return (
     <>
@@ -165,7 +84,7 @@ export default function DisplayPost() {
                 r/{post.name}
               </span>
               <span className="text-xs text-gray-400 mt-0.5">
-                {post.userName}
+                u/{post.userName}
               </span>
             </div>
           </div>
@@ -183,50 +102,7 @@ export default function DisplayPost() {
         
         {/* MEDIA SLIDER */}
         {media.length > 0 && (
-          <div className="mb-4">
-            <div className="relative bg-black/20 rounded-lg overflow-hidden w-full h-96"> {/* 💡 Set fixed height on container */}
-              
-              {/* 💡 LOADING SPINNER OVERLAY */}
-              {mediaLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-[#121212] z-10 rounded-lg">
-                    <Loader size={48} className="animate-spin text-gray-500" />
-                </div>
-              )}
-              
-              {/* Main media */}
-              <div className="w-full">
-                {renderMediaItem(media[currentMediaIndex])}
-              </div>
-
-              {/* Prev / Next buttons (Hide buttons while loading) */}
-              {media.length > 1 && !mediaLoading && (
-                <>
-                  <button
-                    onClick={prevMedia}
-                    aria-label="previous media"
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 hover:bg-black/60 z-20"
-                  >
-                    <ChevronLeft className="w-5 h-5 text-white" />
-                  </button>
-
-                  <button
-                    onClick={nextMedia}
-                    aria-label="next media"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 hover:bg-black/60 z-20"
-                  >
-                    <ChevronRight className="w-5 h-5 text-white" />
-                  </button>
-
-                  {/* Count badge */}
-                  <div className="absolute right-3 top-3 text-xs bg-black/60 px-2 py-1 rounded-full text-white z-20">
-                    {currentMediaIndex + 1}/{media.length}
-                  </div>
-                </>
-              )}
-            </div>
-
-            
-          </div>
+          <MediaCarousel mediaList={media} />
         )}
         {/* BODY HTML */}
         <div

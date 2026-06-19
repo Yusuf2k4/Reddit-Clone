@@ -7,55 +7,40 @@ import {
   Bookmark,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { getHomeFeed } from "../util/api";
+import InfiniteScroll from "./InfiniteScroll";
+import PostCard from "./display Community/PostCard";
+import MediaCarousel from "./MediaCarousel";
+import { useNavigate } from "react-router";
+import CommunityAvatar from "../util/loading screen/CommunityAvatar";
+import { User } from "phosphor-react";
 
 const ITEMS_PER_LOAD = 5;
 
 const Home = () => {
   const [items, setItems] = useState([]);
-  const page = useRef(0);
-  const loaderRef = useRef(null);
+  const [isLast, setIsLast] = useState(true);
+  const pageNo = useRef(0);
+  const size = useRef(3);
+  const loaderRef = useRef(false);
+  const initialized = useRef(false);
 
-  // Fetch only the current page from the full JSON
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const fetchPage = async () => {
-    if (loading) return; // prevent duplicate calls
-    setLoading(true);
-
-    const res = await fetch("/data.json");
-    const data = await res.json();
-
-    const start = page.current * ITEMS_PER_LOAD;
-    const end = start + ITEMS_PER_LOAD;
-
-    const nextItems = data.slice(start, end);
-
-    if (nextItems.length > 0) {
-      setItems((prev) => [...prev, ...nextItems]);
-      page.current += 1;
-    }
-
-    setLoading(false);
+    const data = await getHomeFeed(pageNo.current, size.current);
+    setItems((prev) => [...prev, ...data.content]);
+    setIsLast(data.last);
+    pageNo.current += 1;
   };
 
   useEffect(() => {
-    fetchPage(); // Load first page
+    if (initialized.current) return;
+    initialized.current = true;
+    fetchPage();
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !loading) {
-          fetchPage();
-        }
-      },
-      { threshold: 1 }
-    );
-
-    if (loaderRef.current) observer.observe(loaderRef.current);
-    return () => observer.disconnect();
-  }, [loading]);
+  console.log(items);
 
   return (
     <div className="max-w-4xl px-4 py-8 md:py-10">
@@ -67,17 +52,18 @@ const Home = () => {
             <div>
               <div
                 key={index}
-                className="w-full bg-[rgb(26,26,27)] rounded-md text-white p-4 hover:bg-[#2a2a2a] transition-colors duration-200 "
+                className="w-full bg-[rgb(26,26,27)] rounded-md text-white p-4 hover:bg-[#2a2a2a] transition-colors duration-200"
+                onClick={() => navigate(`/r/${item.communityName}/${item.id}/comments`)}
               >
                 {/* Header Row */}
                 <div className="flex items-center text-sm text-gray-400 mb-2">
-                  <img
-                    src="/profile.jpg"
-                    alt="User"
-                    className="w-6 h-6 rounded-full mr-2"
-                  />
-                  <span className="font-semibold text-white">
-                    {item.communityName}
+                  {item.communityLogo ? (
+                <CommunityAvatar src={item.communityLogo} />
+              ) : (
+                <User size={16}/>
+              )}
+                  <span className="font-semibold text-white hover:cursor-pointer p-2" onClick={() => navigate(`/r/${item.communityName}`)}>
+                    r/{item.communityName}
                   </span>
                 </div>
 
@@ -87,17 +73,11 @@ const Home = () => {
                 </div>
 
                 {/* Media or Text Content */}
-                {isMediaPost ? (
-                  <div className="rounded-md overflow-hidden mb-4">
-                    <img
-                      src={item.image}
-                      alt="Post"
-                      className="w-full max-w-[512px] h-[400px] mx-auto object-contain rounded"
-                    />
-                  </div>
+                {item.mediaDTOList?.length > 0 ? (
+                  <MediaCarousel mediaList={item.mediaDTOList} />
                 ) : (
                   <div className="text-sm text-gray-300 mb-4 leading-relaxed">
-                    {item.description || "Sample text post content..."}
+                    {item.bodyText}
                   </div>
                 )}
 
@@ -142,12 +122,7 @@ const Home = () => {
       </div>
 
       {/* Loader or End Message */}
-      <div
-        ref={loaderRef}
-        className="py-5 text-center text-gray-500 text-sm h-12 flex items-center justify-center"
-      >
-        {loading ? "Loading..." : "No more items"}
-      </div>
+      <InfiniteScroll getData={fetchPage} hasMore={!isLast} />
     </div>
   );
 };

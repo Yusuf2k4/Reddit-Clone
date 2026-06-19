@@ -1,9 +1,6 @@
 package com.Yusuf.redditclone.controller;
 
-import com.Yusuf.redditclone.DTO.CommunitiesResponseDTO;
-import com.Yusuf.redditclone.DTO.CommunityPostsResponseDTO;
-import com.Yusuf.redditclone.DTO.PostRequestDTO;
-import com.Yusuf.redditclone.DTO.PostResponseDTO;
+import com.Yusuf.redditclone.DTO.*;
 import com.Yusuf.redditclone.model.Post;
 import com.Yusuf.redditclone.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +24,18 @@ public class PostController {
 
     @GetMapping("/post/{id}")
     public PostResponseDTO getPostById(@PathVariable int id){
-        System.out.println(id);
         return postService.getPostById(id);
     }
 
     @GetMapping("/post/community/{community}")
     public Slice<CommunityPostsResponseDTO> getPostByCommunity(@PathVariable String community, Pageable pageable){
-        System.out.println(community);
         return postService.getPostsByCommunity( community, pageable);
     }
 
+    @GetMapping("/posts")
+    public Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable){
+        return postService.getHomeFeed(pageable);
+    }
 //    @GetMapping("/{communityName}/posts")
 //    public List<PostResponseDTO> getPostsByCommunityName(@PathVariable("communityName") String name){
 //        return postService.getPostByCommunityName(name);

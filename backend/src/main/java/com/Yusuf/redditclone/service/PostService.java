@@ -93,6 +93,16 @@ public class PostService {
         }
         return communityPostsResponseDTOList;
     }
+
+    public Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable) {
+        Slice<HomeFeedResponseDTO> homeFeedResponseDTOS = postRepository.getHomeFeed(pageable);
+        for(HomeFeedResponseDTO homeFeedResponseDTO : homeFeedResponseDTOS){
+            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(homeFeedResponseDTO.getId());
+
+            homeFeedResponseDTO.setMediaDTOList(mediaDTOS);
+        }
+        return  homeFeedResponseDTOS;
+    }
 //
 //    public List<PostResponseDTO> getPostByCommunityName(String name) {
 //

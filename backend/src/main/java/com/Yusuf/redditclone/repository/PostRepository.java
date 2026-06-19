@@ -1,6 +1,7 @@
 package com.Yusuf.redditclone.repository;
 
 import com.Yusuf.redditclone.DTO.CommunityPostsResponseDTO;
+import com.Yusuf.redditclone.DTO.HomeFeedResponseDTO;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.model.Post;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,15 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     int getCommunityId(String community);
 
 
+    @Query("Select new com.Yusuf.redditclone.DTO.HomeFeedResponseDTO(p.id,c.name,c.logo,p.createdAt,p.title,p.bodyText,p.bodyHtml) " +
+            "From Post p " +
+            "Inner join p.community c " +
+            "Order by p.createdAt DESC " +
+            "Limit 2")
+    Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable);
 
 
 
+    // select p.id,c.name,c.logo,p.created_at,p.title,p.body_text,p.body_html from post p INNER JOIN Community c
+    //ON p.community_id = c.id;
 }

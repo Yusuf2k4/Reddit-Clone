@@ -44,9 +44,9 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
-                        "/communities", "/r/**", "communities/**"
-                                , "post/**", "/post","/topic", "/register-user", "/login","/oauth2/**",
-                                "/login/oauth2/**","/import", "/*/posts")
+                        "/communities", "/r/**", "/communities/**"
+                                , "/post/**", "/post","/topic", "/register-user", "/login","/oauth2/**",
+                                "/login/oauth2/**","/import", "/*/posts", "/posts")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
