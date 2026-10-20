@@ -36,6 +36,23 @@ public class PostController {
     public Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable){
         return postService.getHomeFeed(pageable);
     }
+
+    @GetMapping("/autocomplete/{word}")
+    public List<String> autocomplete(@PathVariable String word){
+        return postService.autocomplete(word);
+    }
+
+    @GetMapping("/fallback")
+    public List<String> fallbackAutocomplete(){
+        return  postService.fallbackAutocomplete();
+    }
+
+    @GetMapping("/search/{searchWord}")
+    public List<SearchResultDTO> getSearchResults(@PathVariable String searchWord){
+        return postService.getSearchResults(searchWord);
+    }
+
+
 //    @GetMapping("/{communityName}/posts")
 //    public List<PostResponseDTO> getPostsByCommunityName(@PathVariable("communityName") String name){
 //        return postService.getPostByCommunityName(name);

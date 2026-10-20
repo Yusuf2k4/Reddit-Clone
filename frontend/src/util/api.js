@@ -144,3 +144,40 @@ export async function getHomeFeed(pageNo,size){
   const data = await response.json();
   return data;
 }
+
+// Autocomplete
+export async function autocomplete(word){
+  const response = await fetch(`http://localhost:8080/autocomplete/${word}`)
+  const data = await response.json();
+  return data;
+}
+
+export async function fallbackAutocomplete(){
+  const response = await fetch("http://localhost:8080/fallback")
+  const data = await response.json();
+  return data;
+}
+
+export async function autocompleteCommunities(communityName){
+  const response = await fetch(`http://localhost:8080/autocomplete/communities/${communityName}`);
+  const data = await response.json();
+  return data;
+}
+
+export async function fallbackCommunities(communityName){
+  const response = await fetch("http://localhost:8080/fallbackCommunities");
+  const data = await response.json();
+  return data;
+}
+
+export async function getPostSearchResults(word){
+  const response = await fetch(`http://localhost:8080/search/${word}`)
+  const data = await response.json();
+  return data;
+}
+
+export async function getCommunitySearchResults(name){
+  const response = await fetch(`http://localhost:8080/search/community/${name}`)
+  const data = await response.json();
+  return data;
+}

@@ -40,7 +40,7 @@ const Home = () => {
     fetchPage();
   }, []);
 
-  console.log(items);
+
 
   return (
     <div className="max-w-4xl px-4 py-8 md:py-10">

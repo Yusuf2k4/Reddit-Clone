@@ -3,6 +3,7 @@ package com.Yusuf.redditclone.controller;
 import com.Yusuf.redditclone.DTO.CommunitiesResponseDTO;
 import com.Yusuf.redditclone.DTO.CommunityDTO;
 import com.Yusuf.redditclone.DTO.CommunityPageResponse;
+import com.Yusuf.redditclone.DTO.CommunitySearchDTO;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,25 @@ public class CommunityController {
         return communityService.getCommunities();
     }
 
-    @GetMapping("communities/{communityName}")
+    @GetMapping("/communities/{communityName}")
     public List<CommunitiesResponseDTO> getCommunitiesByName(@PathVariable("communityName") String communityName){
         return communityService.getCommunitiesByName(communityName);
     }
+
+    @GetMapping("/autocomplete/communities/{communityName}")
+    public List<CommunitiesResponseDTO> autocompleteCommunities(@PathVariable("communityName") String communityName){
+        return communityService.autocompleteCommunities(communityName);
+    }
+
+    @GetMapping("/fallbackCommunities")
+    public List<CommunitiesResponseDTO> fallbackCommunities(){
+        return communityService.fallbackCommunities();
+    }
+
+    @GetMapping("/search/community/{name}")
+    public List<CommunitySearchDTO> communitySearchResult(@PathVariable String name){
+        return communityService.communitySearchResult(name);
+    }
+
+
 }

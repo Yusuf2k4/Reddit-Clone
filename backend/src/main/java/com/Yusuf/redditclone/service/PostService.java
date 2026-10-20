@@ -103,6 +103,19 @@ public class PostService {
         }
         return  homeFeedResponseDTOS;
     }
+
+    public List<String> autocomplete(String word) {
+        return postRepository.autocomplete(word);
+    }
+
+    public List<String> fallbackAutocomplete() {
+        return postRepository.fallbackAutocomplete();
+    }
+
+    public List<SearchResultDTO> getSearchResults(String searchWord) {
+        List<SearchResultDTO> searchResultDTOS= new ArrayList<>();
+        return postRepository.getSearchResults(searchWord);
+    }
 //
 //    public List<PostResponseDTO> getPostByCommunityName(String name) {
 //

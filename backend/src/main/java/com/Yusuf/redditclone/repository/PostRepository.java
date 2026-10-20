@@ -2,6 +2,7 @@ package com.Yusuf.redditclone.repository;
 
 import com.Yusuf.redditclone.DTO.CommunityPostsResponseDTO;
 import com.Yusuf.redditclone.DTO.HomeFeedResponseDTO;
+import com.Yusuf.redditclone.DTO.SearchResultDTO;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.model.Post;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,54 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             "Order by p.createdAt DESC " +
             "Limit 2")
     Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable);
+
+
+    @Query(value = """
+    SELECT title
+    FROM post
+    WHERE title ILIKE CONCAT('%', :word, '%')
+    ORDER BY
+        CASE
+            WHEN title ILIKE CONCAT(:word, '%') THEN 0
+            ELSE 1
+        END,
+        title
+    LIMIT 6
+    """, nativeQuery = true)
+    List<String> autocomplete(String word);
+
+    @Query(value = """
+            Select title from post
+            LIMIT 6
+            """, nativeQuery = true)
+
+    List<String> fallbackAutocomplete();
+
+
+
+    @Query(value = """
+    SELECT p.id, c.name, c.logo, p.title, p.created_at,
+         (
+            SELECT m.media FROM media m
+            WHERE m.post_id = p.id ORDER BY m.id LIMIT 1
+         ) AS mediaURL,
+        ts_rank(
+            to_tsvector('english',
+                COALESCE(p.title, '') || ' ' || COALESCE(p.body_text, '')
+            ),
+            websearch_to_tsquery('english', :searchWord)
+        ) AS relevance
+    FROM post p
+    INNER JOIN community c ON p.community_id = c.id
+    WHERE to_tsvector('english',
+        COALESCE(p.title, '') || ' ' || COALESCE(p.body_text, '')
+    ) @@ websearch_to_tsquery('english', :searchWord)
+    ORDER BY relevance DESC
+    LIMIT 20
+    
+    
+    """, nativeQuery = true)
+    List<SearchResultDTO> getSearchResults( String searchWord);
 
 
 

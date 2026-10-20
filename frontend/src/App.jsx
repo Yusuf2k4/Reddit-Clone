@@ -20,6 +20,7 @@ import { createPost } from "./util/api";
 import CommunityLayout from "./root layouts/CommunityLayout";
 import { getCommunityByName } from "./util/api";
 import DisplayPost from "./components/display post/DisplayPost";
+import SearchResultTab from "./components/search bar/search results/SearchResultTab";
 
 function App() {
   const route = createBrowserRouter([
@@ -93,6 +94,11 @@ function App() {
 
           ]
 
+        },
+
+        {
+          path:"/search/:searchResult",
+          element:<SearchResultTab></SearchResultTab>
         }
       ],
     },

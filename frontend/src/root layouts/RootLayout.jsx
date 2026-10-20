@@ -5,14 +5,14 @@ import Sidebar from "../components/sidebar/Sidebar";
 import MobileSidebar from "../components/sidebar/MobileSidebar";
 import LoginModal from "../components/modal/LoginModal";
 import { UserContext } from "../context/UserContext";
+import SearchBar from "../components/search bar/SearchBar";
 
 const RootLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const signUpRef = useRef();
-  const {user} = useContext(UserContext)
-  
-  
+  const { user } = useContext(UserContext);
+
   return (
     <div>
       <nav className="bg-[rgb(26,26,27)] py-3 px-4 border-b-[1px] border-b-white fixed top-0 left-0 right-0 z-50">
@@ -35,13 +35,12 @@ const RootLayout = () => {
 
           {/* Search */}
           <div className="flex-1 flex justify-center">
-            <div className="flex items-center bg-gray-700 px-3 py-2 rounded-full text-white w-full max-w-[600px]">
+            <div className="flex items-center bg-gray-700 px-3 py-2 rounded-full text-white w-full ml-52 max-w-[600px]">
               <Search size={18} className="text-gray-400 mr-2" />
-              <input
-                type="search"
-                placeholder="Search Reddit"
-                className="bg-transparent outline-none text-sm placeholder-gray-400 w-full"
-              />
+              <div className="flex-1">
+                <SearchBar />
+              </div>
+            
             </div>
           </div>
 
@@ -49,16 +48,16 @@ const RootLayout = () => {
           <div className="flex items-center space-x-4">
             {/* hide on mobile */}
             <div className="hidden md:flex items-center space-x-5 text-white">
-              <Link to="/chats" className={`${user ? "":"hidden" }`}>
+              <Link to="/chats" className={`${user ? "" : "hidden"}`}>
                 <MessageCircle />
               </Link>
-              <Link to="/post" className={`${user ? "":"hidden" }`}>
+              <Link to="/post" className={`${user ? "" : "hidden"}`}>
                 <div className="flex items-center space-x-1">
                   <Plus />
                   <span>Create</span>
                 </div>
               </Link>
-              <Link to="/notifications" className={`${user ? "":"hidden" }`}>
+              <Link to="/notifications" className={`${user ? "" : "hidden"}`}>
                 <Bell />
               </Link>
             </div>
@@ -66,7 +65,7 @@ const RootLayout = () => {
             {/* Login button - visible only on small screens, positioned to the right */}
             <button
               onClick={() => signUpRef.current.open()}
-              className={`px-3 py-1 rounded-full bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 ${user ? "hidden": ""}`}
+              className={`px-3 py-1 rounded-full bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 ${user ? "hidden" : ""}`}
               aria-label="Login"
             >
               Login
@@ -78,7 +77,7 @@ const RootLayout = () => {
               <img
                 src="https://www.svgrepo.com/show/57063/reddit.svg"
                 alt="profile"
-                className={`h-8 w-8 rounded-full object-cover cursor-pointer bg-white ${user ? "": "hidden"}`}
+                className={`h-8 w-8 rounded-full object-cover cursor-pointer bg-white ${user ? "" : "hidden"}`}
               />
             </Link>
           </div>

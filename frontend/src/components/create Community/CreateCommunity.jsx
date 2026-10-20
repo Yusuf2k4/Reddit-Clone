@@ -308,7 +308,7 @@ const CreateCommunity = forwardRef((props, ref) => {
       <ImageModal
         ref={bannerModalRef}
         imagePreview={bannerPreview}
-        aspect={5 / 1}
+        aspect={4 / 1}
         onCropDone={(croppedUrl) => setFinalBannerUrl(croppedUrl)}
         onFileSet={(blob) => setFinalBanner(blob)}
         name="Banner"

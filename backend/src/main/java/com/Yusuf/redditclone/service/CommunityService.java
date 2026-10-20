@@ -3,6 +3,7 @@ package com.Yusuf.redditclone.service;
 import com.Yusuf.redditclone.DTO.CommunitiesResponseDTO;
 import com.Yusuf.redditclone.DTO.CommunityDTO;
 import com.Yusuf.redditclone.DTO.CommunityPageResponse;
+import com.Yusuf.redditclone.DTO.CommunitySearchDTO;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.model.Tag;
 import com.Yusuf.redditclone.repository.CommunityRepository;
@@ -83,5 +84,17 @@ public class CommunityService {
             return new ArrayList<>();
         }
         return communitiesResponseDTOList;
+    }
+
+    public List<CommunitiesResponseDTO> autocompleteCommunities(String communityName) {
+        return communityRepository.searchCommunities(communityName);
+    }
+
+    public List<CommunitiesResponseDTO> fallbackCommunities() {
+        return communityRepository.fallbackCommunities();
+    }
+
+    public List<CommunitySearchDTO> communitySearchResult(String name) {
+        return communityRepository.getCommunitySearchResult(name);
     }
 }

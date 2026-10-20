@@ -46,7 +46,10 @@ public class SecurityConfig {
                         .requestMatchers(
                         "/communities", "/r/**", "/communities/**"
                                 , "/post/**", "/post","/topic", "/register-user", "/login","/oauth2/**",
-                                "/login/oauth2/**","/import", "/*/posts", "/posts")
+                                "/login/oauth2/**","/import", "/*/posts", "/posts", "/fallback"
+                                , "/fallbackCommunities", "/autocomplete/**",
+                                "/search/**")
+
                         .permitAll()
                         .anyRequest()
                         .authenticated())
