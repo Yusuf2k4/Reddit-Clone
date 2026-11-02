@@ -1,43 +1,8 @@
 import { useEffect, useState } from "react";
 import { getCommunitySearchResults } from "../../../util/api";
 import { useNavigate, useParams } from "react-router";
-
-const communities = [
-  {
-    name: "javascript",
-    description:
-      "All about JavaScript, the web's most popular programming language.",
-    members: 2450000,
-    logo: "https://placehold.co/80x80/f7df1e/000000?text=JS",
-  },
-  {
-    name: "reactjs",
-    description:
-      "A community for React developers to share knowledge, projects, and questions.",
-    members: 850000,
-    logo: "https://placehold.co/80x80/20232a/61dafb?text=R",
-  },
-  {
-    name: "webdev",
-    description: "A community dedicated to all things web development.",
-    members: 2100000,
-    logo: null,
-  },
-  {
-    name: "leetcode",
-    description:
-      "Discuss coding problems, interview preparation, and data structures.",
-    members: 650000,
-    logo: null,
-  },
-  {
-    name: "programming",
-    description:
-      "Computer programming, software engineering, and everything in between.",
-    members: 5200000,
-    logo: null,
-  },
-];
+import { useInfiniteQuery } from "@tanstack/react-query";
+import InfiniteScroll from "../../InfiniteScroll";
 
 const colors = [
   "bg-purple-600",
@@ -48,20 +13,22 @@ const colors = [
 ];
 
 export default function CommunityResults() {
-  const [data, setData] = useState([]);
   const { searchResult: name } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function getData() {
-      const response = await getCommunitySearchResults(name);
-      setData(response);
-    }
-    getData();
-  }, [name]);
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["search-word-community", name],
+    queryFn: ({ pageParam }) => getCommunitySearchResults(name, pageParam, 10),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) =>
+      lastPage.last ? undefined : lastPage.number + 1,
+  });
+
+  
+  const communities = data?.pages?.flatMap((page) => page.content) ?? [];
 
 
-  if (!data?.length) {
+  if (!communities?.length) {
     return (
       <div className="mx-auto max-w-4xl py-12 text-center text-gray-400">
         No community found for "{name}"
@@ -71,7 +38,7 @@ export default function CommunityResults() {
   return (
     <div className="w-full max-w-3xl">
       <div className="flex flex-col ">
-        {data.map((community, index) => (
+        {communities.map((community, index) => (
           <div
             key={community.name}
             className="flex items-start gap-3 py-4 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
@@ -108,6 +75,7 @@ export default function CommunityResults() {
             </div>
           </div>
         ))}
+        <InfiniteScroll getData={fetchNextPage} hasMore={hasNextPage} />
       </div>
     </div>
   );

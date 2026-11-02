@@ -1,11 +1,17 @@
 import { useState } from "react";
 import PostResults from "./PostResults";
 import CommunityResults from "./CommunityResults";
+import { useSearchParams } from "react-router";
 
 function SearchResultTab() {
-  const [activeTab, setActiveTab] = useState("Posts");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab") || "posts";
+  const tabs = ["posts", "communities", "profiles"];
 
-  const tabs = ["Posts", "Communities", "Profiles"];
+
+  function handleTabs(tab){
+    setSearchParams({tab})
+  }
 
   return (
     <div className="w-3/4 border-b border-[#343536]">
@@ -13,7 +19,7 @@ function SearchResultTab() {
         {tabs.map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => handleTabs(tab)}
             className={`relative py-4 text-sm font-semibold transition-colors duration-200 ${
               activeTab === tab
                 ? "text-white"
@@ -29,10 +35,9 @@ function SearchResultTab() {
         ))}
       </div>
       <div>
-        {activeTab === "Posts" &&  <PostResults />}
-        {activeTab === "Communities" && <CommunityResults />}
+        {activeTab === "posts" &&  <PostResults />}
+        {activeTab === "communities" && <CommunityResults />}
        
-        {/* Communities */}
         {/* Profile */}
       </div>
     </div>

@@ -9,6 +9,8 @@ import com.Yusuf.redditclone.model.Tag;
 import com.Yusuf.redditclone.repository.CommunityRepository;
 import com.Yusuf.redditclone.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -94,7 +96,7 @@ public class CommunityService {
         return communityRepository.fallbackCommunities();
     }
 
-    public List<CommunitySearchDTO> communitySearchResult(String name) {
-        return communityRepository.getCommunitySearchResult(name);
+    public Slice<CommunitySearchDTO> communitySearchResult(String name, Pageable pageable) {
+        return communityRepository.getCommunitySearchResult(name, pageable);
     }
 }

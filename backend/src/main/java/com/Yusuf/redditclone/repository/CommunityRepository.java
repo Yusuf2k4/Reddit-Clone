@@ -5,6 +5,8 @@ import com.Yusuf.redditclone.DTO.CommunityPageResponse;
 import com.Yusuf.redditclone.DTO.CommunityPostsResponseDTO;
 import com.Yusuf.redditclone.DTO.CommunitySearchDTO;
 import com.Yusuf.redditclone.model.Community;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -43,8 +45,7 @@ public interface CommunityRepository extends JpaRepository<Community, Integer> {
                     ELSE 1
                 END,
                 name
-            LIMIT 6
             """, nativeQuery = true)
-    List<CommunitySearchDTO> getCommunitySearchResult(String name);
+    Slice<CommunitySearchDTO> getCommunitySearchResult(String name, Pageable pageable);
 
 }

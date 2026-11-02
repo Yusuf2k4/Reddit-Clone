@@ -15,9 +15,8 @@ public class PostResponseDTO {
     String bodyText;
     String bodyHtml;
     String name;
-    String logo;
+    String communityLogo;
     List<MediaDTO> media;
     String userName;
-    Long totalCount;
-    Long userCount;
+    boolean isSaved;
 }

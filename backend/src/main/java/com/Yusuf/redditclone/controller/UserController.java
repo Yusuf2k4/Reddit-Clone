@@ -2,12 +2,15 @@ package com.Yusuf.redditclone.controller;
 
 
 import com.Yusuf.redditclone.DTO.UserLoginRequestDTO;
+import com.Yusuf.redditclone.DTO.UserPostDTO;
 import com.Yusuf.redditclone.DTO.UserRequestDTO;
 import com.Yusuf.redditclone.model.UserPrincipal;
 import com.Yusuf.redditclone.service.JwtService;
 import com.Yusuf.redditclone.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -18,6 +21,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
@@ -89,4 +94,8 @@ public class UserController {
         return ResponseEntity.ok("User logged out"); // <-- MUST be 200 OK
     }
 
+    @GetMapping("/user/post")
+    public Slice<UserPostDTO> getUserPosts(Pageable pageable){
+        return userService.getUserPosts(pageable);
+    }
 }

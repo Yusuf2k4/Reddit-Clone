@@ -1,4 +1,5 @@
 // Log the user in
+
 export async function logUser(data) {
   const response = await fetch("http://localhost:8080/login", {
     method: "POST",
@@ -27,7 +28,7 @@ export async function getUser() {
 // Create Post
 export async function createPost({ request }) {
   const payload = await request.json();
-  console.log(payload);
+
   const response = await fetch("http://localhost:8080/create/post", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -52,15 +53,15 @@ export async function getCommunities({ req, res }) {
 // Get post by ID
 export async function getPostById({ params }) {
   const { id } = params;
-  const respone = await fetch(`http://localhost:8080/post/${id}`);
+  const respone = await fetch(`http://localhost:8080/post/${id}`, {
+    credentials: "include",
+  });
   const data = await respone.json();
   return data;
 }
 
 // Create community
 export async function postCommunity(data) {
-  console.log("HELLO");
-  console.log(data);
   const communityRequest = await fetch(
     "http://localhost:8080/create-community",
     {
@@ -99,7 +100,7 @@ export async function signUpUser(formData) {
   return await response.text();
 }
 
-// Get communities by their name 
+// Get communities by their name
 export async function searchCommunities(communityName) {
   const response = await fetch(
     `http://localhost:8080/communities/${communityName}`,
@@ -108,14 +109,13 @@ export async function searchCommunities(communityName) {
   return data;
 }
 
-
 // Logout
-export async function logout(){
+export async function logout() {
   const response = await fetch("http://localhost:8080/logout", {
-      method: "post",
-      credentials: "include",
-    });
-    await response.text();
+    method: "post",
+    credentials: "include",
+  });
+  await response.text();
 }
 
 // Get Community By name
@@ -125,59 +125,114 @@ export async function getCommunityByName({ params }) {
   if (!response.ok) {
     throw new Error("Not found");
   }
- 
+
   const data = response.json();
   return data;
 }
 
-//Fetch posts by community name 
-export async function fetchPostsByCommunity(communityName, pageNo, size ){
-  const response = await fetch(`http://localhost:8080/post/community/${communityName}?page=${pageNo}&size=${size}`);
+//Fetch posts by community name
+export async function fetchPostsByCommunity(communityName, pageNo, size) {
+  const response = await fetch(
+    `http://localhost:8080/post/community/${communityName}?page=${pageNo}&size=${size}`,
+  );
   const data = await response.json();
   return data;
 }
 
-
 // Fetch posts for home page
-export async function getHomeFeed(pageNo,size){
-  const response = await fetch(`http://localhost:8080/posts?page=${pageNo}&size=${size}`);
+export async function getHomeFeed(pageNo, size) {
+  const response = await fetch(
+    `http://localhost:8080/posts?page=${pageNo}&size=${size}`,
+    { credentials: "include" },
+  );
   const data = await response.json();
   return data;
 }
 
 // Autocomplete
-export async function autocomplete(word){
-  const response = await fetch(`http://localhost:8080/autocomplete/${word}`)
+export async function autocomplete(word) {
+  const response = await fetch(`http://localhost:8080/autocomplete/${word}`);
   const data = await response.json();
   return data;
 }
 
-export async function fallbackAutocomplete(){
-  const response = await fetch("http://localhost:8080/fallback")
+export async function fallbackAutocomplete() {
+  const response = await fetch("http://localhost:8080/fallback");
   const data = await response.json();
   return data;
 }
 
-export async function autocompleteCommunities(communityName){
-  const response = await fetch(`http://localhost:8080/autocomplete/communities/${communityName}`);
+export async function autocompleteCommunities(communityName) {
+  const response = await fetch(
+    `http://localhost:8080/autocomplete/communities/${communityName}`,
+  );
   const data = await response.json();
   return data;
 }
 
-export async function fallbackCommunities(communityName){
+export async function fallbackCommunities(communityName) {
   const response = await fetch("http://localhost:8080/fallbackCommunities");
   const data = await response.json();
   return data;
 }
 
-export async function getPostSearchResults(word){
-  const response = await fetch(`http://localhost:8080/search/${word}`)
+export async function getPostSearchResults(word, pageNo, size) {
+  const response = await fetch(
+    `http://localhost:8080/search/${word}?page=${pageNo}&size=${size}`,
+  );
   const data = await response.json();
   return data;
 }
 
-export async function getCommunitySearchResults(name){
-  const response = await fetch(`http://localhost:8080/search/community/${name}`)
+export async function getCommunitySearchResults(name, pageNo, size) {
+  const response = await fetch(
+    `http://localhost:8080/search/community/${name}?page=${pageNo}&size=${size}`,
+  );
   const data = await response.json();
+  return data;
+}
+
+export async function getUserPosts(page, size) {
+  const response = await fetch(
+    `http://localhost:8080/user/post?page=${page}&size=${size}`,
+    {
+      credentials: "include",
+    },
+  );
+  const data = await response.json();
+  return data;
+}
+
+export async function savePost(postId) {
+  const response = await fetch(`http://localhost:8080/post/save/${postId}`, {
+    method: "POST",
+    credentials: "include",
+  });
+}
+
+export async function getSavedPost(page, size) {
+  const response = await fetch(
+    `http://localhost:8080/saved/post?page=${page}&?size=${size}`,
+    {
+      credentials: "include",
+    },
+  );
+  const data = await response.json();
+  return data;
+}
+
+export async function postUserHistory(postId) {
+  const response = await fetch(`http://localhost:8080/history/user/${postId}`, {
+    method: "Post",
+    credentials: "include",
+  });
+}
+
+export async function getUserHistory() {
+  const response = await fetch(`http://localhost:8080/user/history`, {
+    credentials: "include",
+  });
+  const data = await response.json();
+  
   return data;
 }

@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import Autocomplete from "./Autocomplete";
 import SearchCommunities from "./SearchCommunities";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 function SearchBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [word, setWord] = useState("");
   const searchRef = useRef(null);
   const navigate = useNavigate();
+  const [searchParam, setSearchParams] = useSearchParams()
+  const tab = searchParam.get("tab") || "posts";
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -34,7 +36,8 @@ function SearchBar() {
       if(word === ""){
         return
       }
-      navigate(`/search/${encodeURIComponent(word)}`)
+    
+      navigate(`/search/${encodeURIComponent(word)}?tab=${tab}`)
       setIsDropdownOpen(false);
     }
   }
@@ -49,6 +52,7 @@ function SearchBar() {
         onFocus={() => setIsDropdownOpen(true)}
         onChange={(e) => setWord(e.target.value)}
         onKeyDown={(e) => handleEnter(e)}
+        
       />
 
       {isDropdownOpen && (

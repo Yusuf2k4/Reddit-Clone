@@ -26,5 +26,5 @@ public class SavedPost {
     @JoinColumn(name ="user_id")
     private User user;
 
-    private Instant savedAt;
+
 }

@@ -9,7 +9,7 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 public class SearchResultDTO {
-    int id;
+    int postId;
     String communityName;
     String communityLogo;
     String title;

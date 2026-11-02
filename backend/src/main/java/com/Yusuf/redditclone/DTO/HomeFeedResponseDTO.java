@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class HomeFeedResponseDTO {
-    private int id;
+    private int postId;
     private String communityName;
     private String communityLogo;
     private Instant createdAt;
@@ -19,14 +19,17 @@ public class HomeFeedResponseDTO {
     private String bodyText;
     private String bodyHtml;
     private List<MediaDTO> mediaDTOList;
+    private Boolean isSaved;
 
-    public HomeFeedResponseDTO(int id, String communityName, String communityLogo, Instant createdAt, String title, String bodyText, String bodyHtml) {
-        this.id = id;
+    public HomeFeedResponseDTO(int id, String communityName, String communityLogo, Instant createdAt, String title, String bodyText, String bodyHtml, boolean isSaved) {
+
+        this.postId = id;
         this.communityName = communityName;
         this.communityLogo = communityLogo;
         this.createdAt = createdAt;
         this.title = title;
         this.bodyText = bodyText;
         this.bodyHtml = bodyHtml;
+        this.isSaved = isSaved;
     }
 }

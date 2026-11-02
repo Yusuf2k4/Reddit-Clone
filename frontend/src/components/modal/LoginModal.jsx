@@ -13,12 +13,12 @@ export default function LoginModal({ ref }) {
   useImperativeHandle(ref, () => ({
     open: () => {
       dialogRef.current.showModal();
-      console.log("IS OPEN")
+
       setIsModalOpen(true);
     },
     close: () => {
       dialogRef.current.close();
-      console.log("IS CLOSED")
+
 
       setIsModalOpen(false);
     },

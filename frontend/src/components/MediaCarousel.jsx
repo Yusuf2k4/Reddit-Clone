@@ -27,6 +27,7 @@ const MediaCarousel = ({ mediaList = [] }) => {
     setCurrentMediaIndex(prevIndex);
   };
 
+
   return (
     <div className="relative w-full h-64 md:h-96 bg-black rounded-md overflow-hidden mb-3 flex items-center justify-center">
       {mediaLoading && (
@@ -70,7 +71,7 @@ const MediaCarousel = ({ mediaList = [] }) => {
             <ChevronRight size={20} />
           </button>
 
-          <div className="absolute bottom-3 right-3 bg-black/70 text-xs px-2 py-1 rounded-full">
+          <div className="absolute bottom-3 right-3 bg-black/70 text-xs px-2 py-1 rounded-full text-white">
             {currentMediaIndex + 1} / {mediaList.length}
           </div>
         </>

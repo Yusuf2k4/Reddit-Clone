@@ -7,11 +7,9 @@ import Chat from "./pages/Chat";
 
 import CreatePost from "./pages/CreatePost";
 import Notifications from "./pages/Notifications";
-import Profile from "./pages/Profile";
 import Popular from "./pages/Popular";
 import Explore from "./pages/Explore";
-import All from "./pages/Communities";
-import { Plus } from "lucide-react";
+
 import Communities from "./pages/Communities";
 import DisplayCommunity from "./components/display Community/DisplayCommunity";
 import { getCommunities, getPostById } from "./util/api";
@@ -21,6 +19,7 @@ import CommunityLayout from "./root layouts/CommunityLayout";
 import { getCommunityByName } from "./util/api";
 import DisplayPost from "./components/display post/DisplayPost";
 import SearchResultTab from "./components/search bar/search results/SearchResultTab";
+import User from "./components/user/User";
 
 function App() {
   const route = createBrowserRouter([
@@ -53,7 +52,7 @@ function App() {
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: <User />,
         },
         {
           path: "/popular",
@@ -100,6 +99,8 @@ function App() {
           path:"/search/:searchResult",
           element:<SearchResultTab></SearchResultTab>
         }
+
+        
       ],
     },
   ]);

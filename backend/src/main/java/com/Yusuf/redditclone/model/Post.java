@@ -22,7 +22,12 @@ public class Post {
     private int id;
 
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String bodyText;
+
+    @Column(columnDefinition = "TEXT")
+
     private String bodyHtml;
 
 

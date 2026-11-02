@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Circle } from "phosphor-react";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   Form,
   useFetcher,
@@ -20,7 +20,9 @@ import TextBox from "../components/create Post/TextBox";
 import { uploadImage } from "../firebase/storage";
 import CommunityAvatar from "../util/loading screen/CommunityAvatar";
 
+
 const CreatePost = () => {
+
   const [dropdownIsOpen, setDropDownIsOpen] = useState(false);
   const [selectedCommunity, setSelectedCommunity] = useState(null);
   const [isPosting, setIsPosting] = useState(false);
@@ -62,6 +64,7 @@ const CreatePost = () => {
         );
       }
     }
+
   }, [fetcher.state, fetcher.data, navigate]);
 
   const types = [

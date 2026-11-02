@@ -1,16 +1,19 @@
 import { Bell, MessageCircle, Plus, Search, Menu } from "lucide-react";
 import React, { useContext, useRef, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, ScrollRestoration, useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar/Sidebar";
 import MobileSidebar from "../components/sidebar/MobileSidebar";
 import LoginModal from "../components/modal/LoginModal";
 import { UserContext } from "../context/UserContext";
 import SearchBar from "../components/search bar/SearchBar";
+import ProfileModal from "../components/modal/ProfileModal";
+
 
 const RootLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const signUpRef = useRef();
+  const profileRef = useRef();
   const { user } = useContext(UserContext);
 
   return (
@@ -73,13 +76,14 @@ const RootLayout = () => {
             <LoginModal ref={signUpRef} />
 
             {/* Always visible on all sizes (you can hide if you prefer to show profile only when logged in) */}
-            <Link to="/profile" className="">
+            <button className="" onClick={() => profileRef.current.open()}>
               <img
                 src="https://www.svgrepo.com/show/57063/reddit.svg"
                 alt="profile"
                 className={`h-8 w-8 rounded-full object-cover cursor-pointer bg-white ${user ? "" : "hidden"}`}
               />
-            </Link>
+            </button>
+            <ProfileModal ref={profileRef} />
           </div>
         </div>
       </nav>
@@ -93,7 +97,10 @@ const RootLayout = () => {
         </div>
 
         <div className="mt-16 flex-1">
+
+
           <Outlet />
+          <ScrollRestoration />
         </div>
       </div>
     </div>

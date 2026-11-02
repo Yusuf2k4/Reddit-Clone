@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class UserResponseDTO {
+    int id;
     String userName;
     String email;
     String gender;

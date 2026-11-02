@@ -1,40 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import PostCard from "./PostCard";
 import InfiniteScroll from "../InfiniteScroll";
-import { data } from "react-router";
+
 import { fetchPostsByCommunity } from "../../util/api";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import PostCard from "../display post/PostCard";
 
 function CommunityPostList({ community }) {
-  const [posts, setPosts] = useState([]);
-  const pageRef = useRef(0);
-  const sizeRef = useRef(5);
-  const [isLast, setIsLast] = useState(false);
-  const initialized = useRef(false);
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["community-post", community.name],
+    queryFn: ({ pageParam }) =>
+      fetchPostsByCommunity(community.name, pageParam, 5),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) =>
+      lastPage.last ? undefined : lastPage.number + 1,
+  });
 
-  useEffect(() => {
-    setPosts([]);
-    setIsLast(false);
-    pageRef.current = 0;
-  }, [community.name]);
-
-  async function fetchPosts() {
-    if (isLast) return;
-    const data = await fetchPostsByCommunity(
-      community.name,
-      pageRef.current,
-      sizeRef.current,
-    );
-
-    setPosts((prev) => [...prev, ...data.content]);
-    setIsLast(data.last);
-    pageRef.current += 1;
-  }
-
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-    fetchPosts();
-  }, [community.name]);
+  const posts = data?.pages?.flatMap((page) => page.content) ?? [];
 
   // Guard clause
   if (!community || !posts || posts.length === 0) {
@@ -51,9 +31,17 @@ function CommunityPostList({ community }) {
 
       <div className="flex flex-col space-y-4">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <PostCard
+            post={post}
+            key={post?.postId}
+            options={{
+              showCommunityName: false,
+              showCarousel: true,
+              showUserLogo: true,
+            }}
+          />
         ))}
-        <InfiniteScroll getData={fetchPosts} hasMore={!isLast} />
+        <InfiniteScroll getData={fetchNextPage} hasMore={hasNextPage} />
       </div>
     </div>
   );

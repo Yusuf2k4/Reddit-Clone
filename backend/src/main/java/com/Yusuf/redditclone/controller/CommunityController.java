@@ -7,6 +7,8 @@ import com.Yusuf.redditclone.DTO.CommunitySearchDTO;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,9 +52,12 @@ public class CommunityController {
     }
 
     @GetMapping("/search/community/{name}")
-    public List<CommunitySearchDTO> communitySearchResult(@PathVariable String name){
-        return communityService.communitySearchResult(name);
+    public Slice<CommunitySearchDTO> communitySearchResult(@PathVariable String name, Pageable pageable){
+        return communityService.communitySearchResult(name, pageable);
     }
+
+
+
 
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 public class PostController {
@@ -24,6 +25,7 @@ public class PostController {
 
     @GetMapping("/post/{id}")
     public PostResponseDTO getPostById(@PathVariable int id){
+
         return postService.getPostById(id);
     }
 
@@ -48,8 +50,8 @@ public class PostController {
     }
 
     @GetMapping("/search/{searchWord}")
-    public List<SearchResultDTO> getSearchResults(@PathVariable String searchWord){
-        return postService.getSearchResults(searchWord);
+    public Slice<SearchResultDTO> getSearchResults(@PathVariable String searchWord, Pageable pageable){
+        return postService.getSearchResults(searchWord, pageable);
     }
 
 

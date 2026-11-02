@@ -5,6 +5,8 @@ import com.Yusuf.redditclone.model.*;
 import com.Yusuf.redditclone.repository.CommunityRepository;
 import com.Yusuf.redditclone.repository.MediaRepository;
 import com.Yusuf.redditclone.repository.PostRepository;
+import com.Yusuf.redditclone.repository.SavedPostRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -26,6 +28,12 @@ public class PostService {
 
     @Autowired
     MediaRepository mediaRepository;
+
+    @Autowired
+    SavedPostRepository savedPostRepository;
+
+    @Autowired
+    UserService userService;
 
 
 
@@ -69,35 +77,42 @@ public class PostService {
     }
 
     public PostResponseDTO getPostById(int id) {
+        int userId = userService.getUserId();
         Post post = postRepository.findById(id).orElse(null);
         List<MediaDTO> media = mediaRepository.getAllById(id);
+        boolean isSaved = savedPostRepository.existsByUserIdAndPostId(userId, id);
         List<PostResponseDTO> postResponseDTOS = new ArrayList<>();
         PostResponseDTO response = new PostResponseDTO();
         response.setName(post.getCommunity().getName());
         response.setTitle(post.getTitle());
-        response.setLogo(post.getCommunity().getLogo());
-        response.setUserName("u/"+post.getAuthor().getUserName());
+        response.setCommunityLogo(post.getCommunity().getLogo());
+        response.setUserName(post.getAuthor().getUserName());
         response.setBodyHtml(post.getBodyHtml());
         response.setBodyText(post.getBodyText());
         response.setMedia(media);
+        response.setSaved(isSaved);
         return response;
     }
 
     public Slice<CommunityPostsResponseDTO> getPostsByCommunity(String community, Pageable pageable) {
+        int userId = userService.getUserId();
 
-        Slice<CommunityPostsResponseDTO> communityPostsResponseDTOList = postRepository.getPostByCommunity(community, pageable);
+        Slice<CommunityPostsResponseDTO> communityPostsResponseDTOList = postRepository.getPostByCommunity(community, userId, pageable);
 
         for (CommunityPostsResponseDTO communityPostsResponseDTO : communityPostsResponseDTOList) {
-            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(communityPostsResponseDTO.getId());
+            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(communityPostsResponseDTO.getPostId());
             communityPostsResponseDTO.setMediaResponseDTOList(mediaDTOS);
         }
         return communityPostsResponseDTOList;
     }
 
     public Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable) {
-        Slice<HomeFeedResponseDTO> homeFeedResponseDTOS = postRepository.getHomeFeed(pageable);
+        int userId = userService.getUserId();
+
+
+        Slice<HomeFeedResponseDTO> homeFeedResponseDTOS = postRepository.getHomeFeed(userId, pageable);
         for(HomeFeedResponseDTO homeFeedResponseDTO : homeFeedResponseDTOS){
-            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(homeFeedResponseDTO.getId());
+            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(homeFeedResponseDTO.getPostId());
 
             homeFeedResponseDTO.setMediaDTOList(mediaDTOS);
         }
@@ -112,26 +127,12 @@ public class PostService {
         return postRepository.fallbackAutocomplete();
     }
 
-    public List<SearchResultDTO> getSearchResults(String searchWord) {
+    public Slice<SearchResultDTO> getSearchResults(String searchWord, Pageable pageable) {
         List<SearchResultDTO> searchResultDTOS= new ArrayList<>();
-        return postRepository.getSearchResults(searchWord);
+        return postRepository.getSearchResults(searchWord, pageable);
     }
-//
-//    public List<PostResponseDTO> getPostByCommunityName(String name) {
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        Integer userId = null;
-//
-//        if (authentication != null
-//                && authentication.isAuthenticated()
-//                && authentication.getPrincipal() instanceof UserPrincipal userPrincipal) {
-//
-//            userId = userPrincipal.getId();
-//        }
-//        System.out.println(name);
-//        return postRepository.findByCommunityName(name, userId);
-//
-//    }
+
+
 
 
 }

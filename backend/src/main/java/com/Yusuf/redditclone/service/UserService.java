@@ -1,18 +1,23 @@
 package com.Yusuf.redditclone.service;
 
 import com.Yusuf.redditclone.DTO.UserLoginRequestDTO;
+import com.Yusuf.redditclone.DTO.UserPostDTO;
 import com.Yusuf.redditclone.DTO.UserRequestDTO;
 import com.Yusuf.redditclone.DTO.UserResponseDTO;
 import com.Yusuf.redditclone.model.Tag;
 import com.Yusuf.redditclone.model.User;
+import com.Yusuf.redditclone.model.UserPrincipal;
 import com.Yusuf.redditclone.repository.TagRepository;
 import com.Yusuf.redditclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,6 +68,7 @@ public class UserService {
             return new ResponseEntity<>("Wrong credentials", HttpStatus.NOT_FOUND);
         }
         UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setId(user1.getId());
         userResponseDTO.setUserName(user1.getUserName());
         userResponseDTO.setEmail(user1.getEmail());
         userResponseDTO.setGender(user1.getGender());
@@ -72,6 +78,23 @@ public class UserService {
             userTags.add(t.getName());
         }
         userResponseDTO.setTags(userTags);
-        return new ResponseEntity<>(user1, HttpStatus.OK);
+        return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+    }
+
+    public Slice<UserPostDTO> getUserPosts(Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        int id =userPrincipal.getId();
+        return userRepository.getUserPosts(id, pageable);
+    }
+
+
+    public int getUserId(){
+        int userId = -1;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserPrincipal userPrincipal){
+            return userPrincipal.getId();
+        }
+        return userId;
     }
 }
