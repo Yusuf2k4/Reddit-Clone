@@ -20,4 +20,6 @@ public class UserPostDTO {
     String communityLogo;
     String mediaURL;
     Boolean isSaved;
+    Integer voteType;
+    Long totalVotes;
 }

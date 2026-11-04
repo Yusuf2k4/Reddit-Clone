@@ -12,7 +12,7 @@ import PostCard from "./display post/PostCard";
 
 const Home = () => {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["home-feed"],
+    queryKey: ["home-feed-post"],
     queryFn: ({ pageParam }) => getHomeFeed(pageParam, 6),
     initialPageParam: 0,
     getNextPageParam: (lastPage) =>

@@ -35,7 +35,7 @@ function PostResults() {
     <div className="mx-auto w-full max-w-4xl">
       <div className="divide-y divide-[#303234]">
         {posts.map((post, index) => (
-          <PostCard post={post} key={post?.postId} />
+          <PostCard post={post} key={post?.postId} options={{showUserName: false, showBody:false, showAction: false}} />
         ))}
         <InfiniteScroll getData={fetchNextPage} hasMore={hasNextPage} />
       </div>

@@ -59,7 +59,21 @@ public interface UserHistoryRepository extends JpaRepository<UserHistory,Integer
                 )
                 THEN true
                 ELSE false
-             END as is_Saved
+             END as is_Saved,
+             COALESCE(
+                (
+                    Select v.type from votes v
+                    where v.user_id = :userId and v.post_id = p.id
+                ),
+                0
+            ) as vote_type,
+            COALESCE(
+                (
+                    SELECT SUM(v.type)
+                    From votes v where v.post_id = p.id
+                ),
+                0
+            ) as total_votes
              From user_history uh INNER JOIN post p ON p.id = uh.post_id
              Inner join community c ON p.community_id = c.id
              Inner join user_account u ON u.id = p.author_id

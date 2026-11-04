@@ -8,7 +8,7 @@ import Spinner from "../../util/loading screen/Spinner"
 export default function UserHistory() {
     const {user} = useContext(UserContext)
     const {data, isLoading, isError} = useQuery({
-        queryKey: ['user-history', user?.id],
+        queryKey: ['user-history', user?.id, "post"],
         queryFn: getUserHistory
     })
 

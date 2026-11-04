@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from "react-router";
 import profile from "../../assets/profile.png";
 
-import { getSavedPost, getUserHistory, getUserPosts } from "../../util/api";
+import { getSavedPost, getUserDownVotes, getUserHistory, getUserPosts, getUserUpVotes } from "../../util/api";
 import UserPostList from "./UserPostList";
 import UserHistory from "./UserHistory";
 
@@ -66,8 +66,8 @@ export default function User() {
             {activeTab === "comments" && <div>Comments</div>}
             {activeTab === "saved" && <UserPostList getData={getSavedPost} queryKey="user-saved-post" />}
             {activeTab === "history" && <UserHistory />}
-            {activeTab === "upvoted" && <div>Upvoted posts</div>}
-            {activeTab === "downvoted" && <div>Downvoted posts</div>}
+            {activeTab === "upvoted" && <UserPostList getData={getUserUpVotes} queryKey="user-upvoted-post"/>}
+            {activeTab === "downvoted" && <UserPostList getData={getUserDownVotes} queryKey="user-downvoted-post" />}
           </div>
         </div>
 

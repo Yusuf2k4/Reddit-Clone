@@ -28,14 +28,26 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             	Order BY m.id limit 1
             
             ) As media_url,
-            EXISTS 
+            EXISTS
             (
-                SELECT 1 
-                From saved_post sp where sp.user_id = :id  
+                SELECT 1
+                From saved_post sp where sp.user_id = :id
                 and sp.post_id = p.id
-            ) as isSaved
-            
-        
+            ) as isSaved,
+            COALESCE(
+                (
+                    Select v.type from votes v
+                    where v.user_id = :id and v.post_id = p.id
+                ),
+                0
+            ) as vote_type,
+            COALESCE(
+                (
+                    SELECT SUM(v.type)
+                    From votes v where v.post_id = p.id
+                ),
+                0
+            ) as total_votes
             
             FROM post p
             Inner Join user_account u ON p.author_id = u.id

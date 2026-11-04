@@ -233,6 +233,40 @@ export async function getUserHistory() {
     credentials: "include",
   });
   const data = await response.json();
-  
+
+  return data;
+}
+
+export async function votePost(postId, voteType) {
+  const respone = await fetch(
+    `http://localhost:8080/vote/${postId}/${voteType}`,
+    {
+      credentials: "include",
+      method: "POST",
+    },
+  );
+}
+
+export async function getUserUpVotes(pageNo, size) {
+  const respone = await fetch(
+    `http://localhost:8080/user/upVotes?page=${pageNo}&?size=${size}`,
+    {
+      credentials: "include",
+    },
+  );
+  const data = await respone.json();
+
+  return data;
+}
+
+export async function getUserDownVotes(pageNo, size) {
+  const respone = await fetch(
+    `http://localhost:8080/user/downVotes?page=${pageNo}&?size=${size}`,
+    {
+      credentials: "include",
+    },
+  );
+  const data = await respone.json();
+
   return data;
 }

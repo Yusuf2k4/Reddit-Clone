@@ -33,6 +33,8 @@ export default function PostCard({ post, index = 0, options = {} }) {
   } = { ...defaults, ...options };
   const { communityName } = useParams();
   const media = post?.mediaDTOList || post?.media
+  
+
   function openPost() {
     if (post?.postId != null) {
       if (communityName) {

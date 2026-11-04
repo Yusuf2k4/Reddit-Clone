@@ -48,9 +48,23 @@ public interface SavedPostRepository extends JpaRepository<SavedPost, Integer> {
             	ORDER BY m.id
             	LIMIT 1
             )as mediaURL,
-            TRUE as is_saved
+            TRUE as is_saved,
+            COALESCE(
+                (
+                    Select v.type from votes v
+                    where v.user_id = :userId and v.post_id = p.id
+                ),
+                0
+            ) as vote_type,
+            COALESCE(
+                (
+                    SELECT SUM(v.type)
+                    From votes v where v.post_id = p.id
+                ),
+                0
+            ) as total_votes
             FROM post p Inner JOIN user_account u ON u.id = p.author_id
-            INNER JOIN community c ON c.id = community_id
+            INNER JOIN community c ON c.id = p.community_id
             inner JOIN saved_post sp ON p.id = sp.post_id
             where sp.user_id = :userId;
             
