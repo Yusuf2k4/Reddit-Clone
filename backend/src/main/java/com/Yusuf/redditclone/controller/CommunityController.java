@@ -1,9 +1,6 @@
 package com.Yusuf.redditclone.controller;
 
-import com.Yusuf.redditclone.DTO.CommunitiesResponseDTO;
-import com.Yusuf.redditclone.DTO.CommunityDTO;
-import com.Yusuf.redditclone.DTO.CommunityPageResponse;
-import com.Yusuf.redditclone.DTO.CommunitySearchDTO;
+import com.Yusuf.redditclone.DTO.*;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.service.CommunityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +53,10 @@ public class CommunityController {
         return communityService.communitySearchResult(name, pageable);
     }
 
+    @GetMapping("/{community}/posts")
+    public Slice<UserPostDTO> getPostByCommunity(@PathVariable String community, Pageable pageable){
+        return  communityService.getPostsByCommunity( community, pageable);
+    }
 
 
 

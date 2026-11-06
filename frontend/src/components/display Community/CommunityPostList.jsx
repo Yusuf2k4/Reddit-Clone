@@ -16,6 +16,7 @@ function CommunityPostList({ community }) {
 
   const posts = data?.pages?.flatMap((page) => page.content) ?? [];
 
+
   // Guard clause
   if (!community || !posts || posts.length === 0) {
     return (

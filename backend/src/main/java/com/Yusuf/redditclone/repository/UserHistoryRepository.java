@@ -52,6 +52,7 @@ public interface UserHistoryRepository extends JpaRepository<UserHistory,Integer
                 ORDER BY m.id ASC
                 LIMIT 1
              ) as mediaURL,
+             Null as mediaList,
              CASE
                 WHEN EXISTS (
                     SELECT 1 from saved_post sp

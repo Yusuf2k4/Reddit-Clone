@@ -32,21 +32,18 @@ export default function PostCard({ post, index = 0, options = {} }) {
     showUserLogo,
   } = { ...defaults, ...options };
   const { communityName } = useParams();
-  const media = post?.mediaDTOList || post?.media
-  
+  const media = post?.mediaDTOList || post?.media || post.mediaList;
+
+  const isPathMatching = window.location.pathname === `/r/${post?.communityName}/${post.postId}/comments`
 
   function openPost() {
-    if (post?.postId != null) {
-      if (communityName) {
-        navigate(`${post.postId}/comments`);
-      } else {
-        navigate(`/r/${post?.communityName}/${post.postId}/comments`);
-      }
+    if(window.location.pathname === `/r/${post?.communityName}/${post.postId}/comments`){
+      return
     }
+    navigate(`/r/${post?.communityName}/${post.postId}/comments`);
   }
-
   return (
-    <article className="group flex cursor-pointer items-center gap-5 rounded-2xl px-4 py-5 transition-colors hover:bg-[#191c1e] sm:px-5">
+    <article className="group flex  items-center gap-5 rounded-2xl px-4 py-5 transition-colors hover:bg-[#191c1e] sm:px-5">
       <div className="min-w-0 flex-1">
         <div className="mb-3">
           <PostHeader
@@ -58,7 +55,7 @@ export default function PostCard({ post, index = 0, options = {} }) {
           />
         </div>
 
-        <div onClick={openPost}>
+        <div onClick={openPost} className={isPathMatching ? "":"cursor-pointer"}>
           <PostContent
             post={post}
             showBody={showBody}

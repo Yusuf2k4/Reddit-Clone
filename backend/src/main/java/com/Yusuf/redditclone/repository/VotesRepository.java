@@ -47,6 +47,7 @@ public interface VotesRepository extends JpaRepository<Votes, Integer> {
                 ORDER BY m.id
                 LIMIT 1
             ) AS mediaURL,
+            Null as mediaList,
             EXISTS
             (
                 SELECT 1
@@ -83,6 +84,7 @@ public interface VotesRepository extends JpaRepository<Votes, Integer> {
                 ORDER BY m.id
                 LIMIT 1
             ) AS mediaURL,
+            Null as mediaList,
             EXISTS
             (
                 SELECT 1

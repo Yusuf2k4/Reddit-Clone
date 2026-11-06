@@ -28,6 +28,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             	Order BY m.id limit 1
             
             ) As media_url,
+            Null as mediaList,
             EXISTS
             (
                 SELECT 1

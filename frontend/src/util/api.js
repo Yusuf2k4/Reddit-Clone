@@ -133,7 +133,10 @@ export async function getCommunityByName({ params }) {
 //Fetch posts by community name
 export async function fetchPostsByCommunity(communityName, pageNo, size) {
   const response = await fetch(
-    `http://localhost:8080/post/community/${communityName}?page=${pageNo}&size=${size}`,
+    `http://localhost:8080/${communityName}/posts?page=${pageNo}&size=${size}`,
+    {
+      credentials: "include",
+    },
   );
   const data = await response.json();
   return data;

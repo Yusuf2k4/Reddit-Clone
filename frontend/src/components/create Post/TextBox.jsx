@@ -1,32 +1,66 @@
-import { useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import ReactQuill from "react-quill-new";
 
-const toolbarOptions = [
-  ["bold", "italic", "underline", "strike"], 
-  [{ list: "ordered" }, { list: "bullet" }],
-  ["link", "code-block"],
-];
 
-export default function TextBox({ content, setContent, setPlainText }) {
+const FORMATS = ["bold", "italic", "underline", "strike", "list", "link", "code-block"];
+
+export default function TextBox({
+  content,
+  setContent,
+  setPlainText,
+  height = "16rem",       // fixed height; use "auto" to grow with content
+  minHeight = "8rem",     // used when height="auto"
+  maxHeight = "24rem",    // used when height="auto", then it scrolls
+  placeholder = "Text (optional)",
+  className = "",
+  autoFocus = false
+}) {
+
+
+  useEffect(()=>{
+    if(autoFocus){
+      quillRef.current?.getEditor().focus()
+    }
+  },[autoFocus])
   const quillRef = useRef(null);
 
-  const handleChange = (html, delta, source, editor) => {
-    setContent(html);
-    setPlainText(editor.getText());
-  };
+  const modules = useMemo(
+    () => ({
+      toolbar: [
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link", "code-block"],
+      ],
+      clipboard: { matchVisual: false },
+    }),
+    []
+  );
+
+  const handleChange = useCallback(
+    (html, _delta, _source, editor) => {
+      setContent(html);
+      setPlainText?.(editor.getText().trim());
+    },
+    [setContent, setPlainText]
+  );
 
   return (
-    <div className="quill-dark mt-4">
+    <div
+      className={`quill-dark ${className}`}
+      style={{
+        "--qd-height": height,
+        "--qd-min-height": minHeight,
+        "--qd-max-height": maxHeight,
+      }}
+    >
       <ReactQuill
         ref={quillRef}
         theme="snow"
         value={content}
         onChange={handleChange}
-        placeholder="Text (optional)"
-        className="h-64 mb-12" // Height for editor, mb for toolbar spacing
-        modules={{
-          toolbar: toolbarOptions,
-        }}
+        placeholder={placeholder}
+        modules={modules}
+        formats={FORMATS}
       />
     </div>
   );

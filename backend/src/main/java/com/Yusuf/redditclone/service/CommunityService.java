@@ -1,9 +1,6 @@
 package com.Yusuf.redditclone.service;
 
-import com.Yusuf.redditclone.DTO.CommunitiesResponseDTO;
-import com.Yusuf.redditclone.DTO.CommunityDTO;
-import com.Yusuf.redditclone.DTO.CommunityPageResponse;
-import com.Yusuf.redditclone.DTO.CommunitySearchDTO;
+import com.Yusuf.redditclone.DTO.*;
 import com.Yusuf.redditclone.model.Community;
 import com.Yusuf.redditclone.model.Tag;
 import com.Yusuf.redditclone.repository.CommunityRepository;
@@ -11,18 +8,25 @@ import com.Yusuf.redditclone.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CommunityService {
 
     @Autowired
     CommunityRepository communityRepository;
+
     @Autowired
     TagRepository tagRepository;
+
+    @Autowired
+    UserService userService;
+    
+    @Autowired
+    MediaService mediaService;
 
     public void createCommunity(CommunityDTO communityDTO) {
         List<Tag> tagArrayList = new ArrayList<>();
@@ -98,5 +102,28 @@ public class CommunityService {
 
     public Slice<CommunitySearchDTO> communitySearchResult(String name, Pageable pageable) {
         return communityRepository.getCommunitySearchResult(name, pageable);
+    }
+
+    public Slice<UserPostDTO> getPostsByCommunity(String community, Pageable pageable) {
+        int userId = userService.getUserId();
+        Slice<UserPostDTO> slice =  communityRepository.getPostByCommunity(community, userId, pageable);
+        List<UserPostDTO> updatedPost = slice.getContent();
+
+        Map<Integer, UserPostDTO> map = new HashMap<>();
+
+        for(UserPostDTO post: updatedPost){
+            map.put(post.getPostId(), post);
+        }
+        List<MediaDTO> mediaDTOList = communityRepository.getMediaWithPostIdIn(map.keySet().stream().toList());
+        mediaService.mapMediaWithPost(map,mediaDTOList);
+
+        return  new SliceImpl<>(
+                updatedPost,
+                slice.getPageable(),
+                slice.hasNext()
+        );
+
+
+
     }
 }

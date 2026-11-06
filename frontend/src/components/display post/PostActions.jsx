@@ -12,7 +12,6 @@ function PostActions({ post = [] }) {
   const [isSaved, setIsSaved] = useState(post?.isSaved ?? false);
   const [totalVotes, setTotalVotes] = useState(post?.totalVotes ?? 0);
   const [voteType, setVoteType] = useState(post?.voteType ?? 0);
-
   useEffect(() => {
     setIsSaved(post?.isSaved);
   }, [post?.isSaved]);

@@ -10,12 +10,15 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PostService {
@@ -34,6 +37,9 @@ public class PostService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    MediaService mediaService;
 
 
 
@@ -76,47 +82,36 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public PostResponseDTO getPostById(int id) {
+    public UserPostDTO getPostById(int id) {
         int userId = userService.getUserId();
-        Post post = postRepository.findById(id).orElse(null);
+        UserPostDTO post = postRepository.getPostById(id,userId);
         List<MediaDTO> media = mediaRepository.getAllById(id);
-        boolean isSaved = savedPostRepository.existsByUserIdAndPostId(userId, id);
-        List<PostResponseDTO> postResponseDTOS = new ArrayList<>();
-        PostResponseDTO response = new PostResponseDTO();
-        response.setName(post.getCommunity().getName());
-        response.setTitle(post.getTitle());
-        response.setCommunityLogo(post.getCommunity().getLogo());
-        response.setUserName(post.getAuthor().getUserName());
-        response.setBodyHtml(post.getBodyHtml());
-        response.setBodyText(post.getBodyText());
-        response.setMedia(media);
-        response.setSaved(isSaved);
-        return response;
+        post.setMediaList(media);
+        return post;
     }
 
-    public Slice<CommunityPostsResponseDTO> getPostsByCommunity(String community, Pageable pageable) {
+
+
+    public Slice<UserPostDTO> getHomeFeed(Pageable pageable) {
         int userId = userService.getUserId();
+        Slice<UserPostDTO> posts = postRepository.getHomePosts(userId);
+        List<UserPostDTO> updatedPosts = posts.getContent();
+        Map<Integer, UserPostDTO> map = new HashMap<>();
 
-        Slice<CommunityPostsResponseDTO> communityPostsResponseDTOList = postRepository.getPostByCommunity(community, userId, pageable);
-
-        for (CommunityPostsResponseDTO communityPostsResponseDTO : communityPostsResponseDTOList) {
-            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(communityPostsResponseDTO.getPostId());
-            communityPostsResponseDTO.setMediaResponseDTOList(mediaDTOS);
+        for(UserPostDTO post: updatedPosts){
+            map.put(post.getPostId(), post);
         }
-        return communityPostsResponseDTOList;
-    }
+        List<MediaDTO> mediaDTOList = communityRepository.getMediaWithPostIdIn(map.keySet().stream().toList());
 
-    public Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable) {
-        int userId = userService.getUserId();
+        mediaService.mapMediaWithPost(map,mediaDTOList);
 
 
-        Slice<HomeFeedResponseDTO> homeFeedResponseDTOS = postRepository.getHomeFeed(userId, pageable);
-        for(HomeFeedResponseDTO homeFeedResponseDTO : homeFeedResponseDTOS){
-            List<MediaDTO> mediaDTOS = mediaRepository.getAllById(homeFeedResponseDTO.getPostId());
-
-            homeFeedResponseDTO.setMediaDTOList(mediaDTOS);
-        }
-        return  homeFeedResponseDTOS;
+        return new SliceImpl<>(
+                updatedPosts,
+                posts.getPageable(),
+                posts.hasNext()
+        );
+//
     }
 
     public List<String> autocomplete(String word) {

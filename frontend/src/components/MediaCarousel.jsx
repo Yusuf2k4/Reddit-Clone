@@ -59,14 +59,14 @@ const MediaCarousel = ({ mediaList = [] }) => {
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 bg-gray-700/80 p-2 rounded-full z-10"
+            className="absolute left-3 top-1/2 -translate-y-1/2 bg-gray-700/80 p-2 rounded-full z-10 cursor-pointer"
           >
             <ChevronLeft size={20} />
           </button>
 
           <button
             onClick={handleNext}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700/80 p-2 rounded-full z-10"
+            className="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-700/80 p-2 rounded-full z-10 cursor-pointer"
           >
             <ChevronRight size={20} />
           </button>

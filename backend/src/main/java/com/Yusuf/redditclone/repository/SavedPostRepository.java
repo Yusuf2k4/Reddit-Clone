@@ -48,6 +48,7 @@ public interface SavedPostRepository extends JpaRepository<SavedPost, Integer> {
             	ORDER BY m.id
             	LIMIT 1
             )as mediaURL,
+            Null as mediaList,
             TRUE as is_saved,
             COALESCE(
                 (

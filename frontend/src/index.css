@@ -3,58 +3,148 @@
 body {
   @apply bg-[rgb(26,26,27)] select-none;
 }
+/* =========================================================
+   Quill dark theme. Import AFTER quill.snow.css.
+   Override colors per instance with CSS variables, e.g.
+   <TextBox className="[--qd-bg:#111]" />
+   ========================================================= */
+
 .quill-dark {
-  border: 1px solid rgb(55,65,81);
-  border-radius: 0.75rem; /* more rounded */
-  overflow: hidden;
-  background: transparent;
+  --qd-bg: #0e0e0f;            /* editor background */
+  --qd-toolbar-bg: #1a1a1b;    /* toolbar background */
+  --qd-border: #343536;
+  --qd-border-focus: #6b8fa3;
+  --qd-text: #ffffff;
+  --qd-placeholder: #818384;
+  --qd-icon: #cfd4da;
+  --qd-hover: #2a2f36;
+  --qd-active: #3b82f6;
+  --qd-link: #6cb6ff;
+  --qd-code-bg: #1a1a1b;
+
+  width: 100%;
 }
 
-/* Toolbar */
+/* ---------- Toolbar ---------- */
 .quill-dark .ql-toolbar.ql-snow {
-  background: transparent;
-  border: none;
-  padding: 0.5rem;
+  border: 1px solid var(--qd-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: var(--qd-toolbar-bg);
+  padding: 8px;
 }
 
-/* Container */
+/* ---------- Editor container ---------- */
 .quill-dark .ql-container.ql-snow {
-  background: transparent;
-  border: none;
+  border: 1px solid var(--qd-border);
+  border-radius: 0 0 8px 8px;
+  background: var(--qd-bg);
+  font-family: inherit;
+  font-size: 0.875rem;
+  height: var(--qd-height, 16rem);
+  transition: border-color 0.2s;
 }
 
-/* Editor text area */
+.quill-dark:focus-within .ql-container.ql-snow,
+.quill-dark:focus-within .ql-toolbar.ql-snow {
+  border-color: var(--qd-border-focus);
+}
+
+/* Auto-grow mode: height="auto" */
+.quill-dark[data-auto="true"] .ql-container.ql-snow {
+  height: auto;
+}
+.quill-dark[data-auto="true"] .ql-editor {
+  min-height: var(--qd-min-height, 8rem);
+  max-height: var(--qd-max-height, 24rem);
+  overflow-y: auto;
+}
+
+/* ---------- Text: always white ---------- */
+.quill-dark .ql-editor,
+.quill-dark .ql-editor * {
+  color: var(--qd-text) !important;  /* beats colors from pasted content */
+}
+
 .quill-dark .ql-editor {
-  min-height: 100px; /* shorter height */
-  padding: 0.75rem;
-  line-height: 1.5;
-  font-size: 0.95rem;
-  color: #d1d5db;
-  background: transparent;
+  caret-color: var(--qd-text);
+  padding: 12px 16px;
+  line-height: 1.6;
 }
 
-/* Icon colors */
-.quill-dark .ql-stroke {
-  stroke: #d1d5db !important;
-}
-.quill-dark .ql-fill {
-  fill: #d1d5db !important;
-}
-.quill-dark .ql-picker,
-.quill-dark .ql-picker-label,
-.quill-dark .ql-picker-item {
-  color: #d1d5db !important;
+.quill-dark .ql-editor.ql-blank::before {
+  color: var(--qd-placeholder) !important;
+  font-style: normal;
+  left: 16px;
+  right: 16px;
 }
 
-/* Hover effects */
-.quill-dark .ql-toolbar button:hover,
-.quill-dark .ql-picker-label:hover {
-  background-color: rgba(255,255,255,0.05);
-  border-radius: 0.25rem;
+.quill-dark .ql-editor a {
+  color: var(--qd-link) !important;
+  text-decoration: underline;
 }
 
-/* Focus outline */
-.quill-dark:focus-within {
-  border-color: rgb(96,165,250);
-  box-shadow: 0 0 0 2px rgba(96,165,250,0.4);
+.quill-dark .ql-editor pre.ql-syntax,
+.quill-dark .ql-editor .ql-code-block-container {
+  background: var(--qd-code-bg);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+/* ---------- Toolbar icons ---------- */
+.quill-dark .ql-snow .ql-stroke {
+  stroke: var(--qd-icon);
+}
+.quill-dark .ql-snow .ql-fill {
+  fill: var(--qd-icon);
+}
+
+/* ---------- Buttons ---------- */
+.quill-dark .ql-toolbar button {
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+/* Hover */
+.quill-dark .ql-toolbar button:hover {
+  background: var(--qd-hover);
+}
+.quill-dark .ql-toolbar button:hover .ql-stroke {
+  stroke: #fff;
+}
+.quill-dark .ql-toolbar button:hover .ql-fill {
+  fill: #fff;
+}
+
+/* Pressed / active (Quill adds .ql-active when the format is on) */
+.quill-dark .ql-toolbar button.ql-active {
+  background: var(--qd-active);
+}
+.quill-dark .ql-toolbar button.ql-active .ql-stroke,
+.quill-dark .ql-toolbar button:focus.ql-active .ql-stroke {
+  stroke: #fff;
+}
+.quill-dark .ql-toolbar button.ql-active .ql-fill,
+.quill-dark .ql-toolbar button:focus.ql-active .ql-fill {
+  fill: #fff;
+}
+
+/* ---------- Link tooltip (dark) ---------- */
+.quill-dark .ql-tooltip {
+  background: var(--qd-toolbar-bg);
+  border: 1px solid var(--qd-border);
+  color: var(--qd-text);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  z-index: 20;
+}
+.quill-dark .ql-tooltip input[type="text"] {
+  background: var(--qd-bg);
+  border: 1px solid var(--qd-border);
+  color: var(--qd-text);
+  border-radius: 4px;
+}
+.quill-dark .ql-tooltip a.ql-action,
+.quill-dark .ql-tooltip a.ql-remove {
+  color: var(--qd-link);
 }

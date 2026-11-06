@@ -24,18 +24,14 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public PostResponseDTO getPostById(@PathVariable int id){
-
+    public UserPostDTO getPostById(@PathVariable int id){
         return postService.getPostById(id);
     }
 
-    @GetMapping("/post/community/{community}")
-    public Slice<CommunityPostsResponseDTO> getPostByCommunity(@PathVariable String community, Pageable pageable){
-        return postService.getPostsByCommunity( community, pageable);
-    }
+
 
     @GetMapping("/posts")
-    public Slice<HomeFeedResponseDTO> getHomeFeed(Pageable pageable){
+    public Slice<UserPostDTO> getHomeFeed(Pageable pageable){
         return postService.getHomeFeed(pageable);
     }
 

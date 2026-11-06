@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class UserPostDTO {
     String communityName;
     String communityLogo;
     String mediaURL;
+    List<MediaDTO> mediaList;
     Boolean isSaved;
     Integer voteType;
     Long totalVotes;

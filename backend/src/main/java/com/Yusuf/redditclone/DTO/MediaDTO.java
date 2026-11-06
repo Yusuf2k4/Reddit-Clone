@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class MediaDTO {
     String type;
     String media;
+    int postId;
 }

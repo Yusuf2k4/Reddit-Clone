@@ -12,7 +12,7 @@ public interface MediaRepository extends JpaRepository<Media,Integer> {
     List<Media> findByPostId(int id);
 
 
-    @Query("select new com.Yusuf.redditclone.DTO.MediaDTO(m.type,m.media) " +
+    @Query("select new com.Yusuf.redditclone.DTO.MediaDTO(m.type,m.media,m.post.id) " +
             "From Media m " +
             "where m.post.id = :id ")
 
