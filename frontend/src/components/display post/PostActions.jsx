@@ -8,10 +8,11 @@ import {
 } from "lucide-react";
 import { savePost, votePost } from "../../util/api";
 
-function PostActions({ post = [] }) {
+function PostActions({ post = [], setIsCommentFocused = () => {}}) {
   const [isSaved, setIsSaved] = useState(post?.isSaved ?? false);
   const [totalVotes, setTotalVotes] = useState(post?.totalVotes ?? 0);
   const [voteType, setVoteType] = useState(post?.voteType ?? 0);
+
   useEffect(() => {
     setIsSaved(post?.isSaved);
   }, [post?.isSaved]);
@@ -40,7 +41,7 @@ function PostActions({ post = [] }) {
   };
 
   const handleComment = () => {
-    console.log("Comment clicked");
+    setIsCommentFocused(true)
   };
 
   const handleShare = () => {
@@ -90,7 +91,7 @@ function PostActions({ post = [] }) {
 
       {/* Comments */}
       <button
-        onClick={handleComment}
+        onClick={() => setIsCommentFocused((prev) => !prev)}
         className="flex items-center gap-2 rounded-full bg-[#272729] px-3 py-2 hover:bg-[#343436]"
       >
         <MessageCircle size={18} />

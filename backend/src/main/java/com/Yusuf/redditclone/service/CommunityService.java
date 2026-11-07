@@ -24,7 +24,7 @@ public class CommunityService {
 
     @Autowired
     UserService userService;
-    
+
     @Autowired
     MediaService mediaService;
 

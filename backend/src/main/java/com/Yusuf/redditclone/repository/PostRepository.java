@@ -1,14 +1,12 @@
 package com.Yusuf.redditclone.repository;
 
-import com.Yusuf.redditclone.DTO.CommunityPostsResponseDTO;
-import com.Yusuf.redditclone.DTO.HomeFeedResponseDTO;
+
 import com.Yusuf.redditclone.DTO.SearchResultDTO;
 import com.Yusuf.redditclone.DTO.UserPostDTO;
 import com.Yusuf.redditclone.model.Post;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -16,38 +14,10 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
 
-
-
-
     @Query("Select c.id from Community c where name = :community")
     int getCommunityId(String community);
 
 
-    @Query("""
-    SELECT new com.Yusuf.redditclone.DTO.HomeFeedResponseDTO(
-        p.id,
-        c.name,
-        c.logo,
-        p.createdAt,
-        p.title,
-        p.bodyText,
-        p.bodyHtml,
-        CASE
-            WHEN :id <> -1 AND EXISTS (
-                SELECT 1
-                FROM SavedPost sp
-                WHERE sp.user.id = :id
-                  AND sp.post.id = p.id
-            )
-            THEN true
-            ELSE false
-        END
-    )
-    FROM Post p
-    INNER JOIN p.community c
-    ORDER BY p.createdAt DESC
-    """)
-    Slice<HomeFeedResponseDTO> getHomeFeed(int id, Pageable pageable);
 
 
     @Query(value = """
@@ -159,6 +129,5 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Slice<UserPostDTO> getHomePosts(int id);
 
 
-    // select p.id,c.name,c.logo,p.created_at,p.title,p.body_text,p.body_html from post p INNER JOIN Community c
-    //ON p.community_id = c.id;
+
 }

@@ -1,15 +1,11 @@
-import {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { useLoaderData, useParams } from "react-router";
 import { UserContext } from "../../context/UserContext";
-import { postUserHistory } from "../../util/api";
+import { getCommentsByPost, postUserHistory, saveUserComment } from "../../util/api";
 import PostCard from "./PostCard";
 import TextBox from "../create Post/TextBox";
+import CommentList from "./CommentList";
 
 export default function DisplayPost() {
   const post = useLoaderData();
@@ -17,9 +13,21 @@ export default function DisplayPost() {
   const [isCommentFocused, setIsCommentFocused] = useState(false);
   const [comment, setComment] = useState("");
   const [text, setText] = useState("");
+  const [commentData, setCommentData] = useState([])
   const commentRef = useRef(null);
   const { id: postId } = useParams();
   const { user } = useContext(UserContext);
+
+
+  useEffect(()=>{
+    async function getCommentData(){
+      const data = await getCommentsByPost(post?.postId);
+      setCommentData(data);
+    }
+    getCommentData()
+    
+  },[post?.postId])
+
 
   useEffect(() => {
     async function saveHistory() {
@@ -36,13 +44,25 @@ export default function DisplayPost() {
     setComment("");
     setIsCommentFocused(false);
   }
-  function handleSumbit() {
-    console.log(text);
-    console.log(comment);
+  async function handleSumbit() {
+    const response  = {
+      bodyHtml: comment,
+      bodyText: text,
+      postId: post.postId,
+      parent: null,
+    };
+    await saveUserComment(response);
     setText("");
     setComment("");
     setIsCommentFocused(false);
+    await fetchComments();
   }
+
+  async function fetchComments(){
+    const data = await getCommentsByPost(post?.postId);
+    setCommentData(data)
+  }
+  
   if (!post) {
     return (
       <main className="w-full px-4 py-5 text-[#d7dadc] sm:px-6">
@@ -56,6 +76,7 @@ export default function DisplayPost() {
         <PostCard
           post={post}
           options={{ showFullBody: true, showCarousel: true }}
+          setIsCommentFocused={setIsCommentFocused}
         />
 
         {/* Comments section */}
@@ -139,17 +160,7 @@ export default function DisplayPost() {
           </div>
 
           {/* Empty comments state */}
-          <div className="mt-4 rounded-xl border border-[#343536] bg-[#1a1a1b] px-4 py-8 text-center">
-            <MessageCircle size={28} className="mx-auto mb-3 text-[#818384]" />
-
-            <p className="text-sm font-medium text-[#d7dadc]">
-              The conversation starts here.
-            </p>
-
-            <p className="mt-1 text-xs text-[#818384]">
-              Be the first to share your thoughts.
-            </p>
-          </div>
+          <CommentList commentData={commentData} fetchComments={fetchComments}/>
         </section>
       </div>
     </main>

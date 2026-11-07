@@ -28,7 +28,7 @@ public class SavedPostService {
         int userId = userService.getUserId();
 
         if(userId == -1){
-            System.out.println("HAHAHA DENIED");
+
             return;
         }
         int isSaved = savedPostRepository.isSaved(postId, userId);

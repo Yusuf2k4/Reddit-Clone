@@ -273,3 +273,20 @@ export async function getUserDownVotes(pageNo, size) {
 
   return data;
 }
+
+export async function saveUserComment(comment) {
+  const response = await fetch("http://localhost:8080/comment/post", {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify(comment),
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+export async function getCommentsByPost(postId){
+  const response = await fetch(`http://localhost:8080/comment/post/${postId}`,{
+    credentials: "include"
+  })
+  const data = await response.json();
+  return data;
+}

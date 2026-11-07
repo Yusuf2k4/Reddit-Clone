@@ -20,7 +20,7 @@ const defaults = {
   showCarousel: false,
   showUserLogo: false,
 };
-export default function PostCard({ post, index = 0, options = {} }) {
+export default function PostCard({ post, index = 0, options = {}, setIsCommentFocused}) {
   const navigate = useNavigate();
   const {
     showCommunityName,
@@ -31,9 +31,10 @@ export default function PostCard({ post, index = 0, options = {} }) {
     showCarousel,
     showUserLogo,
   } = { ...defaults, ...options };
-  const { communityName } = useParams();
-  const media = post?.mediaDTOList || post?.media || post.mediaList;
+ 
 
+  const handleComment = setIsCommentFocused ??  (()=> navigate(`/r/${post?.communityName}/${post.postId}/comments`))
+  const media = post?.mediaDTOList || post?.media || post.mediaList;
   const isPathMatching = window.location.pathname === `/r/${post?.communityName}/${post.postId}/comments`
 
   function openPost() {
@@ -71,7 +72,7 @@ export default function PostCard({ post, index = 0, options = {} }) {
 
         <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-[#91a5b0]">
           {showAction ? (
-            <PostActions post={post} />
+            <PostActions post={post} setIsCommentFocused={handleComment} />
           ) : (
             <div className="flex items-center gap-4 font-mono text-xs tracking-wide">
               <span>0 votes</span>
